@@ -69,6 +69,7 @@ public:
 
   double info_position_diff;
   double info_yaw_diff;
+  bool is_out;
 
   // To store another pair of armors message
   double dz, another_r;

@@ -53,6 +53,7 @@ std::vector<Armor> Detector::detect(const cv::Mat &input) noexcept {
     std::for_each(
       std::execution::par, armors_.begin(), armors_.end(), [this, &input](Armor &armor) {
         // 4. Extract the number image
+        if(use_number_classfiy)
         armor.number_img = classifier->extractNumber(input, armor);
         // 5. Do classification
         classifier->classify(input, armor);
@@ -63,6 +64,7 @@ std::vector<Armor> Detector::detect(const cv::Mat &input) noexcept {
       });
 
     // 7. Erase the armors with ignore classes
+    if(use_number_classfiy)
     classifier->eraseIgnoreClasses(armors_);
   }
 
@@ -78,6 +80,12 @@ cv::Mat Detector::preprocessImage(const cv::Mat &rgb_img) noexcept {
   return binary_img;
 }
 
+/**
+ * @brief Searching for two light strips on the armor in the image
+ * @param rgb_img the rgb img
+ * @param binary_img the binary img
+ * @return the array of light strips information
+ */
 std::vector<Light> Detector::findLights(const cv::Mat &rgb_img,
                                         const cv::Mat &binary_img) noexcept {
   using std::vector;

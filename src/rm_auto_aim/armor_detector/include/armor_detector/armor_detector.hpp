@@ -77,6 +77,7 @@ public:
   EnemyColor detect_color;
   LightParams light_params;
   ArmorParams armor_params;
+  bool use_number_classfiy;
 
   std::unique_ptr<NumberClassifier> classifier;
   std::unique_ptr<LightCornerCorrector> corner_corrector;
@@ -85,6 +86,7 @@ public:
   cv::Mat binary_img;
   rm_interfaces::msg::DebugLights debug_lights;
   rm_interfaces::msg::DebugArmors debug_armors;
+  
 
 private:
   bool isLight(const Light &possible_light) noexcept;

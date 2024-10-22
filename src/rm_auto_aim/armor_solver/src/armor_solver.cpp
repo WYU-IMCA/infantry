@@ -35,7 +35,6 @@ Solver::Solver(std::weak_ptr<rclcpp::Node> n) : node_(n) {
   controller_delay_ = node->declare_parameter("solver.controller_delay", 0.0);
   side_angle_ = node->declare_parameter("solver.side_angle", 15.0);
   min_switching_v_yaw_ = node->declare_parameter("solver.min_switching_v_yaw", 1.0);
-  pitch_is_reverse_= node->declare_parameter("solver.pitch_is_reverse", 1);
 
   std::string compenstator_type = node->declare_parameter("solver.compensator_type", "ideal");
   trajectory_compensator_ = CompensatorFactory::createCompensator(compenstator_type);
@@ -62,7 +61,6 @@ rm_interfaces::msg::GimbalCmd Solver::solve(const rm_interfaces::msg::Target &ta
     controller_delay_ = node->get_parameter("solver.controller_delay").as_double();
     side_angle_ = node->get_parameter("solver.side_angle").as_double();
     min_switching_v_yaw_ = node->get_parameter("solver.min_switching_v_yaw").as_double();
-    pitch_is_reverse_= node->get_parameter("solver.pitch_is_reverse").as_int();
     node.reset();
   } catch (const std::runtime_error &e) {
     FYT_ERROR("armor_solver", "{}", e.what());

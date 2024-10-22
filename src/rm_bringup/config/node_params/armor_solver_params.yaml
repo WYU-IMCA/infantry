@@ -8,7 +8,7 @@
       sigma2_q_x: 0.05
       sigma2_q_y: 0.05
       sigma2_q_z: 0.05
-      sigma2_q_yaw: 5.0
+      sigma2_q_yaw: 1.0
       sigma2_q_r: 80.0
 
       r_x: 4e-4
@@ -20,15 +20,15 @@
       max_match_distance: 0.5
       max_match_yaw_diff: 1.0
 
-      tracking_thres: 5
+      tracking_thres: 2
       lost_time_thres: 1.0
     
     solver:
       prediction_delay: 0.0
-      controller_delay: 0.005
+      controller_delay: 0.0
       max_tracking_v_yaw: 30.0 #转速(rad/s)大于这个值时瞄准机器人中心 
       side_angle: 20.0 
-      bullet_speed: 26.7
+      bullet_speed: 28.0
       compenstator_type: "ideal"
       gravity: 9.788
       resistance: 0.092

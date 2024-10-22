@@ -20,6 +20,6 @@
     armor.max_large_center_distance: 8.0
     armor.max_angle: 35.0
 
+    use_number_classfly: false
     classifier_threshold: 0.5
     ignore_classes: ["negative"]
-    

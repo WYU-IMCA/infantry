@@ -94,7 +94,6 @@ private:
 
   double side_angle_;
   double min_switching_v_yaw_;
-  int pitch_is_reverse_;
 
 
   std::weak_ptr<rclcpp::Node> node_;

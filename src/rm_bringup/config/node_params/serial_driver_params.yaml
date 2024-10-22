@@ -1,9 +1,10 @@
 /**:
   ros__parameters:
     target_frame: odom
-    timestamp_offset: 0.012
+    timestamp_offset: 0.004
     port_name: "/dev/ttyUSB0"
     protocol: "infantry"
     enable_data_print: false # 改为true将会打印从串口读出来的16进制数据
     enable_send_data_print: false # 改为true将会打印发送给串口读出来的16进制数据
+    use_timer: true #是否使用ROS2 timer作为串口接受数据的线程
 

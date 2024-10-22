@@ -156,6 +156,11 @@ namespace fyt::auto_aim
     heartbeat_ = HeartBeatPublisher::create(this);
   }
 
+  /**
+   * @brief total function when receive image msg
+   * @param img_msg ros2 image msg
+   */
+
   void ArmorDetectorNode::imageCallback(const sensor_msgs::msg::Image::ConstSharedPtr img_msg)
   {
     // Get the transform from odom to gimbal
@@ -292,7 +297,10 @@ namespace fyt::auto_aim
       publishMarkers();
     }
   }
-
+/**
+ * @brief init the Detector class
+ * @return the unique_ptr for Detector class
+ */
   std::unique_ptr<Detector> ArmorDetectorNode::initDetector()
   {
     rcl_interfaces::msg::ParameterDescriptor param_desc;
@@ -325,6 +333,8 @@ namespace fyt::auto_aim
 
     auto detector = std::make_unique<Detector>(binary_thres, static_cast<EnemyColor>(detect_color), l_params, a_params);
 
+    detector->use_number_classfiy = declare_parameter("use_number_classfiy", true);
+
     // Init classifier
     namespace fs = std::filesystem;
     fs::path model_path =
@@ -354,6 +364,11 @@ namespace fyt::auto_aim
     return detector;
   }
 
+/**
+ * @brief detect the armors from the image msg
+ * @param img_msg ros2 image msg
+ * @return the Armors information array
+ */
   std::vector<Armor> ArmorDetectorNode::detectArmors(
       const sensor_msgs::msg::Image::ConstSharedPtr &img_msg)
   {
@@ -407,6 +422,12 @@ namespace fyt::auto_aim
     return armors;
   }
 
+/**
+ * @brief solve pnp to transform the 2D xyz to 3D xyz
+ * @param armor one armor information
+ * @param rvec rotation matrix
+ * @param tvec translation matrix 
+ */
   void ArmorDetectorNode::PnPSolutionsSelection(const Armor &armor,
                                                 cv::Mat &rvec,
                                                 cv::Mat &tvec) noexcept
@@ -437,7 +458,12 @@ namespace fyt::auto_aim
       tvec = std::accumulate(tvecs.begin(), tvecs.end(), cv::Mat::zeros(3, 1, CV_64F)) / tvecs.size();
     }
   }
-
+/**
+ * @brief convert rotation matrix to flight angle
+ * @param rvec rotation matrix
+ * @param axis the index [0]roll angle [1]pitch angle [2]yaw angle
+ * @return the rpy[axis]
+ */
   double ArmorDetectorNode::rvecToRPY(const cv::Mat &rvec, int axis) const noexcept
   {
     cv::Mat R;
@@ -452,7 +478,9 @@ namespace fyt::auto_aim
     tf2::Matrix3x3(tf_q).getRPY(rpy[0], rpy[1], rpy[2]);
     return rpy[axis];
   }
-
+/**
+ * @brief ros2 auto parameters setting 
+ */
   rcl_interfaces::msg::SetParametersResult ArmorDetectorNode::onSetParameters(
       std::vector<rclcpp::Parameter> parameters)
   {
@@ -512,21 +540,17 @@ namespace fyt::auto_aim
       {
         detector_->armor_params.max_angle = param.as_double();
       }
+      else if (param.get_name() == "use_number_classfiy")
+      {
+        detector_->use_number_classfiy = param.as_bool();
+      }
     }
     return result;
   }
 
-  // void ArmorDetectorNode::targetCallback(const rm_interfaces::msg::Target::SharedPtr target_msg) {
-  //   if (target_msg->tracking) {
-  //     tracked_target_ = target_msg;
-  //   } else {
-  //     tracked_target_ = nullptr;
-  //     if (!tracked_armors_.empty()) {
-  //       tracked_armors_.clear();
-  //     }
-  //   }
-  // }
-
+/**
+ * @brief create debug publishers
+ */
   void ArmorDetectorNode::createDebugPublishers() noexcept
   {
     lights_data_pub_ =
@@ -540,6 +564,9 @@ namespace fyt::auto_aim
     result_img_pub_ = image_transport::create_publisher(this, "armor_detector/result_img");
   }
 
+/**
+ * @brief destroy debug publishers
+ */
   void ArmorDetectorNode::destroyDebugPublishers() noexcept
   {
     lights_data_pub_.reset();
@@ -550,6 +577,9 @@ namespace fyt::auto_aim
     result_img_pub_.shutdown();
   }
 
+/**
+ * @brief debug publishers pubish markers
+ */
   void ArmorDetectorNode::publishMarkers() noexcept
   {
     using Marker = visualization_msgs::msg::Marker;
@@ -558,6 +588,9 @@ namespace fyt::auto_aim
     marker_pub_->publish(marker_array_);
   }
 
+/**
+ * @brief the service for mode [0]aim [1]auto aim [2]small rune [3]big rune
+ */
   void ArmorDetectorNode::setModeCallback(
       const std::shared_ptr<rm_interfaces::srv::SetMode::Request> request,
       std::shared_ptr<rm_interfaces::srv::SetMode::Response> response)

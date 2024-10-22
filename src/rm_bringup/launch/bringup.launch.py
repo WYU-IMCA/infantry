@@ -44,8 +44,8 @@ def generate_launch_description():
     # 图像
     if launch_params['video_play']: 
         image_node  = ComposableNode(
-            package='rm_camera_driver',
-            plugin='fyt::camera_driver::VideoPlayerNode',
+            package='hik_camera',
+            plugin='hik_camera::VideoPlayerNode',
             name='video_player',
             parameters=[get_params('video_player')],
             extra_arguments=[{'use_intra_process_comms': True}]
@@ -140,7 +140,7 @@ def generate_launch_description():
     # 使用intra cmmunication提高图像的传输速度
     def get_camera_detector_container(*detector_nodes):
         nodes_list = list(detector_nodes)
-        nodes_list.append(image_node)
+        #nodes_list.append(image_node)
         container = ComposableNodeContainer(
             name='camera_detector_container',
             namespace='',

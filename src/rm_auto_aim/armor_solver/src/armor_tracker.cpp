@@ -35,7 +35,7 @@
 namespace fyt::auto_aim
 {
   Tracker::Tracker(double max_match_distance, double max_match_yaw_diff)
-      : tracker_state(LOST), tracked_id(std::string("")), measurement(Eigen::VectorXd::Zero(4)), target_state(Eigen::VectorXd::Zero(9)), max_match_distance_(max_match_distance), max_match_yaw_diff_(max_match_yaw_diff) {}
+      : tracker_state(LOST), tracked_id(std::string("")), measurement(Eigen::VectorXd::Zero(4)), target_state(Eigen::VectorXd::Zero(12)), max_match_distance_(max_match_distance), max_match_yaw_diff_(max_match_yaw_diff) {}
 
   void Tracker::init(const Armors::SharedPtr &armors_msg) noexcept
   {
@@ -71,6 +71,7 @@ namespace fyt::auto_aim
     Eigen::VectorXd ekf_prediction = ekf.predict();
 
     bool matched = false;
+    is_out=true;
     // Use KF prediction as default target state if no matched armor is found
     target_state = ekf_prediction;
 
@@ -98,7 +99,7 @@ namespace fyt::auto_aim
           {
             // Find the closest armor
             min_position_diff = position_diff;
-            yaw_diff = abs(orientationToYaw(armor.pose.orientation) - ekf_prediction(6));
+            yaw_diff = abs(orientationToYaw(armor.pose.orientation) - ekf_prediction(9));
             tracked_armor = armor;
             // Update tracked armor type
             if (tracked_armor.type == "large" &&
@@ -122,10 +123,8 @@ namespace fyt::auto_aim
       info_position_diff = min_position_diff;
       info_yaw_diff = yaw_diff;
 
-      // Check if the distance and yaw difference of closest armor are within the
-      // threshold
-      //RCLCPP_INFO(rclcpp::get_logger("armor_tracker"),"min_position_diff:%f yaw_diff:%f same_id_armors_count:%d",min_position_diff,yaw_diff,same_id_armors_count);
-
+      // Check if the distance and yaw difference of closest armor are within the threshold
+      
       if (min_position_diff < max_match_distance_ && yaw_diff < max_match_yaw_diff_)
       {
         // Matched armor found
@@ -135,8 +134,7 @@ namespace fyt::auto_aim
         double measured_yaw = orientationToYaw(tracked_armor.pose.orientation);
         measurement = Eigen::Vector4d(p.x, p.y, p.z, measured_yaw);
         target_state = ekf.update(measurement);
-        //debug
-        //RCLCPP_INFO(rclcpp::get_logger("armor_tracker"),"updated x:%f y:%f z:%f",target_state(0),target_state(2),target_state(4));
+       	
       }
       else if (same_id_armors_count == 1 && yaw_diff > max_match_yaw_diff_)
       {
@@ -149,18 +147,19 @@ namespace fyt::auto_aim
       {
         // No matched armor found
         FYT_WARN("armor_solver", "No matched armor found!");
+        is_out=false;
       }
     }
 
     // Prevent radius from spreading
-    if (target_state(8) < 0.12)
+    if (target_state(11) < 0.12)
     {
-      target_state(8) = 0.12;
+      target_state(11) = 0.12;
       ekf.setState(target_state);
     }
-    else if (target_state(8) > 0.4)
+    else if (target_state(11) > 0.4)
     {
-      target_state(8) = 0.4;
+      target_state(11) = 0.4;
       ekf.setState(target_state);
     }
 
@@ -223,43 +222,29 @@ namespace fyt::auto_aim
     double yaw = orientationToYaw(a.pose.orientation);
 
     // Set initial position at 0.2m behind the target
-    target_state = Eigen::VectorXd::Zero(9);
+    target_state = Eigen::VectorXd::Zero(12);
     double r = 0.26;
     double xc = xa + r * cos(yaw);
     double yc = ya + r * sin(yaw);
     dz = 0, another_r = r;
-    target_state << xc, 0, yc, 0, za, 0, yaw, 0, r;
+    target_state << xc, 0, 0, yc, 0, 0, za, 0, 0, yaw, 0, r;
 
     ekf.setState(target_state);
   }
 
   void Tracker::handleArmorJump(const Armor &current_armor) noexcept
   {
-    // double last_yaw = target_state(6);
-    // double yaw = orientationToYaw(current_armor.pose.orientation);
-
-    // if (abs(yaw - last_yaw) > 0.4) {
-    //   // Armor angle also jumped, take this case as target spinning
-    //   target_state(6) = yaw;
-    //   // Only 4 armors has 2 radius and height
-    //   if (tracked_armors_num == ArmorsNum::NORMAL_4) {
-    //     dz = target_state(4) - current_armor.pose.position.z;
-    //     target_state(4) = current_armor.pose.position.z;
-    //     std::swap(target_state(8), another_r);
-    //   }
-    //   FYT_DEBUG("armor_solver", "Armor Jump!");
-    // }
     double yaw = orientationToYaw(current_armor.pose.orientation);
-    target_state(6) = yaw;
+    target_state(9) = yaw;
     updateArmorsNum(current_armor);
     // Only 4 armors has 2 radius and height
     if (tracked_armors_num == ArmorsNum::NORMAL_4)
     {
-      dz = target_state(4) - current_armor.pose.position.z;
-      target_state(4) = current_armor.pose.position.z;
-      std::swap(target_state(8), another_r);
+      dz = target_state(6) - current_armor.pose.position.z;
+      target_state(6) = current_armor.pose.position.z;
+      std::swap(target_state(11), another_r);
     }
-    RCLCPP_WARN(rclcpp::get_logger("armor_tracker"), "Armor jump!");
+    FYT_WARN(("armor_tracker"), "Armor jump!");
 
     // If position difference is larger than max_match_distance_,
     // take this case as the ekf diverged, reset the state
@@ -275,10 +260,13 @@ namespace fyt::auto_aim
       double r = target_state(8);
       target_state(0) = p.x + r * cos(yaw); // xc
       target_state(1) = 0;                  // vxc
-      target_state(2) = p.y + r * sin(yaw); // yc
-      target_state(3) = 0;                  // vyc
-      target_state(4) = p.z;                // xz
-      target_state(5) = 0;                  // vza
+      target_state(2) = 0;                  // axc
+      target_state(3) = p.y + r * sin(yaw); // yc
+      target_state(4) = 0;                  // vyc
+      target_state(5) = 0;                  // ayc
+      target_state(6) = p.z;                // za
+      target_state(7) = 0;                  // vza
+      target_state(8) = 0;                  // aza
       FYT_WARN("armor_solver", "State wrong!");
     }
 
@@ -301,8 +289,8 @@ namespace fyt::auto_aim
   Eigen::Vector3d Tracker::getArmorPositionFromState(const Eigen::VectorXd &x) noexcept
   {
     // Calculate predicted position of the current armor
-    double xc = x(0), yc = x(2), za = x(4);
-    double yaw = x(6), r = x(8);
+    double xc = x(0), yc = x(3), za = x(6);
+    double yaw = x(9), r = x(11);
     double xa = xc - r * cos(yaw);
     double ya = yc - r * sin(yaw);
     return Eigen::Vector3d(xa, ya, za);

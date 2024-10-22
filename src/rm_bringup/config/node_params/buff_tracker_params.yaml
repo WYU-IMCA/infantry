@@ -45,7 +45,7 @@
       max_distance_diff: 120.0
       
     solver:
-      prediction_delay: 0.02
+      prediction_delay: 0.08
       bullet_speed: 27.0
       gravity: 9.788
       iteration_times: 30
