@@ -40,6 +40,11 @@ Detector::Detector(const int &bin_thres,
                    const ArmorParams &a)
 : binary_thres(bin_thres), detect_color(color), light_params(l), armor_params(a) {}
 
+/**
+ * @brief 对输入图像进行装甲板检测
+ * @param input 输入图像
+ * @return 该图中检测到装甲板的集合(vector)
+ */
 std::vector<Armor> Detector::detect(const cv::Mat &input) noexcept {
   // 1. Preprocess the image
   binary_img = preprocessImage(input);
@@ -71,6 +76,11 @@ std::vector<Armor> Detector::detect(const cv::Mat &input) noexcept {
   return armors_;
 }
 
+/**
+ * @brief   对输入图像进行预处理
+ * @param   rgb_img RGB图像
+ * @return  处理后的图像
+ */
 cv::Mat Detector::preprocessImage(const cv::Mat &rgb_img) noexcept {
   cv::cvtColor(rgb_img, gray_img_, cv::COLOR_RGB2GRAY);
 
@@ -120,6 +130,11 @@ std::vector<Light> Detector::findLights(const cv::Mat &rgb_img,
   return lights;
 }
 
+/**
+ * @brief  对检测到所以的疑似灯条轮廓进行判断
+ * @param  light 要检测的灯条
+ * @return True是灯条  False不是灯条
+ */
 bool Detector::isLight(const Light &light) noexcept {
   // The ratio of light (short side / long side)
   float ratio = light.width / light.length;
@@ -140,6 +155,11 @@ bool Detector::isLight(const Light &light) noexcept {
   return is_light;
 }
 
+/**
+ * @brief  匹配所有输入的灯条，并寻找能用两个灯条组合成一个装甲板的灯条
+ * @param  lights 所有需要匹配的灯条集合
+ * @return 得到的所有装甲板集合
+ */
 std::vector<Armor> Detector::matchLights(const std::vector<Light> &lights) noexcept {
   std::vector<Armor> armors;
   this->debug_armors.data.clear();
@@ -167,7 +187,13 @@ std::vector<Armor> Detector::matchLights(const std::vector<Light> &lights) noexc
   return armors;
 }
 
-// Check if there is another light in the boundingRect formed by the 2 lights
+/**
+ * @brief  检查两个灯条组成的框之中有没有另一个灯条
+ * @param  i 代表的第一个灯条在容器中的下标
+ * @param  j 代表的第二个灯条在容器中的下标
+ * @param  lights 存放所有灯条的容器
+ * @return True 两个灯条之间有另一个灯条 Flase 两个灯条之间没有另一个灯条
+ */
 bool Detector::containLight(const int i, const int j, const std::vector<Light> &lights) noexcept {
   const Light &light_1 = lights.at(i), light_2 = lights.at(j);
   auto points = std::vector<cv::Point2f>{light_1.top, light_1.bottom, light_2.top, light_2.bottom};
@@ -195,6 +221,13 @@ bool Detector::containLight(const int i, const int j, const std::vector<Light> &
   return false;
 }
 
+/**
+ * @brief  判断两个灯条是否可以组成一个装甲板
+ * @param  light_1 第一个灯条
+ * @param  light_2 第二个灯条
+ * @return 两个灯条组成的装甲板类型     ArmorType::INVALID代表不能组成装甲板   
+ *         ArmorType::LARGE  大装甲板  ArmorType::SMALL  小装甲板
+ */
 ArmorType Detector::isArmor(const Light &light_1, const Light &light_2) noexcept {
   // Ratio of the length of 2 lights (short side / long side)
   float light_length_ratio = light_1.length < light_2.length ? light_1.length / light_2.length
@@ -237,6 +270,9 @@ ArmorType Detector::isArmor(const Light &light_1, const Light &light_2) noexcept
   return type;
 }
 
+/**
+ * @brief  获取所有装甲板的数字图像并全部放到一张图里
+ */
 cv::Mat Detector::getAllNumbersImage() const noexcept {
   if (armors_.empty()) {
     return cv::Mat(cv::Size(20, 28), CV_8UC1);
@@ -252,6 +288,9 @@ cv::Mat Detector::getAllNumbersImage() const noexcept {
   }
 }
 
+/**
+ * @brief  在图像上画出装甲板的框、数字识别的结果以便调试
+ */
 void Detector::drawResults(cv::Mat &img) const noexcept {
   // Draw Lights
 

@@ -50,6 +50,12 @@ BaSolver::BaSolver(std::array<double, 9> &camera_matrix, std::vector<double> &di
   lm_algorithm_->setUserLambdaInit(0.1);
 }
 
+/**
+ * @brief 用BA方法来优化PNP解算得到的旋转矩阵R，减小误差
+ * @param armors 装甲板集合
+ * @param rmat 用BA方法优化后的结果
+ * @return True 成功  False失败
+ */
 bool BaSolver::solveBa(const std::deque<Armor> &armors, cv::Mat &rmat) noexcept {
   if (armors.empty()) {
     return true;
