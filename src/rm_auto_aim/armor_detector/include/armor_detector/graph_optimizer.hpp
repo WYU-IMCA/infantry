@@ -35,7 +35,7 @@
 // project
 #include "armor_detector/types.hpp"
 
-namespace fyt::auto_aim {
+namespace imca::auto_aim {
 // Vertex of graph optimization algorithm for the yaw angle
 class VertexYaw : public g2o::BaseVertex<1, Eigen::Vector<double, 1>> {
 public:
@@ -75,5 +75,5 @@ private:
   double pitch_;
 };
 
-}  // namespace fyt::auto_aim
+}  // namespace imca::auto_aim
 #endif  // ARMOR_DETECTOR_GRAPH_OPTIMIZER_HPP_

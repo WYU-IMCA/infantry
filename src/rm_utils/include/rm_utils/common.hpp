@@ -18,7 +18,7 @@
 
 #include <string>
 
-namespace fyt {
+namespace imca {
 
 enum class EnemyColor{
   RED = 0,
@@ -70,5 +70,5 @@ inline std::string visionModeToString(VisionMode mode) {
   }
 }
 
-}  // namespace fyt
+}  // namespace imca
 #endif

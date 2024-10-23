@@ -1,5 +1,5 @@
 // Created by Chengfu Zou
-// Copyright (C) FYT Vision Group. All rights reserved.
+// Copyright (C) IMCA Vision Group. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 #include <iostream>
 #include <sstream>
 
-#define FYT_ASSERT(condition)                            \
+#define IMCA_ASSERT(condition)                            \
   do {                                                   \
     if (!(condition)) {                                  \
       std::ostringstream oss;                            \
@@ -29,7 +29,7 @@
     }                                                    \
   } while (0)
 
-#define FYT_ASSERT_MSG(condition, msg)                           \
+#define IMCA_ASSERT_MSG(condition, msg)                           \
   do {                                                           \
     if (!(condition)) {                                          \
       std::ostringstream oss;                                    \

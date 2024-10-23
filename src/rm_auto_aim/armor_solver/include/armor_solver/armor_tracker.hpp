@@ -34,7 +34,7 @@
 #include "rm_interfaces/msg/target.hpp"
 #include "rm_utils/math/extended_kalman_filter.hpp"
 
-namespace fyt::auto_aim {
+namespace imca::auto_aim {
 
 enum class ArmorsNum { NORMAL_4 = 4, BALANCE_2 = 2, OUTPOST_3 = 3 };
 
@@ -93,6 +93,6 @@ private:
   double last_yaw_;
 };
 
-}  // namespace fyt::auto_aim
+}  // namespace imca::auto_aim
 
 #endif  // ARMOR_SOLVER_ARMOR_TRACKER_HPP_

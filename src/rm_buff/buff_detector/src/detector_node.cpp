@@ -173,18 +173,18 @@ void BuffDetectorNode::setModeCallback(
 {
   response->success = true;
 
-  fyt::VisionMode mode = static_cast<fyt::VisionMode>(request->mode);
-  std::string mode_name = fyt::visionModeToString(mode);
+  imca::VisionMode mode = static_cast<imca::VisionMode>(request->mode);
+  std::string mode_name = imca::visionModeToString(mode);
   if (mode_name == "UNKNOWN") {
     return;
   }
   switch (mode) {
-    case fyt::VisionMode::SMALL_RUNE: {
+    case imca::VisionMode::SMALL_RUNE: {
       is_buff_task_ = true;
       RCLCPP_INFO(get_logger(), "Create buff_detector");
       break;
     }
-    case fyt::VisionMode::BIG_RUNE: {
+    case imca::VisionMode::BIG_RUNE: {
       is_buff_task_ = true;
       RCLCPP_INFO(get_logger(), "Create buff_detector");
       break;

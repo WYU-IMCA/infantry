@@ -1,6 +1,6 @@
 // Created by Labor 2023.8.25
 // Maintained by Chengfu Zou, Labor
-// Copyright (C) FYT Vision Group. All rights reserved.
+// Copyright (C) IMCA Vision Group. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@
 #include "rm_utils/logger/log.hpp"
 #include "rm_utils/math/utils.hpp"
 
-namespace fyt::auto_aim {
+namespace imca::auto_aim {
 G2O_USE_OPTIMIZATION_LIBRARY(dense)
 
 BaSolver::BaSolver(std::array<double, 9> &camera_matrix, std::vector<double> &dist_coeffs) {
@@ -147,4 +147,4 @@ bool BaSolver::solveBa(const std::deque<Armor> &armors, cv::Mat &rmat) noexcept 
   return true;
 }
 
-}  // namespace fyt::auto_aim
+}  // namespace imca::auto_aim

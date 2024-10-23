@@ -24,7 +24,7 @@
 #include "rm_serial_driver/protocol/infantry_protocol.hpp"
 #include "rm_serial_driver/protocol/sentry_protocol.hpp"
 
-namespace fyt::serial_driver
+namespace imca::serial_driver
 {
 
   class ProtocolFactory
@@ -57,5 +57,5 @@ namespace fyt::serial_driver
     }
   };
 
-}; // namespace fyt::serial_driver
+}; // namespace imca::serial_driver
 #endif // SERIAL_DRIVER_PROTOCOL_FACTORY_HPP_

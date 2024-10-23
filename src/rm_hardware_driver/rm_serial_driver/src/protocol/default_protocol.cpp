@@ -15,7 +15,7 @@
 
 #include "rm_serial_driver/protocol/default_protocol.hpp"
 
-namespace fyt::serial_driver::protocol
+namespace imca::serial_driver::protocol
 {
 
   DefaultProtocol::DefaultProtocol(std::string_view port_name, bool enable_data_print, bool enable_send_data_print)
@@ -80,4 +80,4 @@ namespace fyt::serial_driver::protocol
     return {client1, client2};
   }
 
-} // namespace fyt::serial_driver::protocol
+} // namespace imca::serial_driver::protocol

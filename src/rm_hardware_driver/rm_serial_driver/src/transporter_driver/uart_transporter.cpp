@@ -28,7 +28,7 @@
 #include <termios.h> /*PPSIX 终端控制定义*/
 #include <unistd.h>  /*Unix 标准函数定义*/
 
-namespace fyt::serial_driver {
+namespace imca::serial_driver {
 
 bool UartTransporter::setParam(int speed, int flow_ctrl, int databits, int stopbits, int parity) {
   // 设置串口数据帧格式
@@ -193,4 +193,4 @@ int UartTransporter::write(const void *buffer, size_t len) {
   return ret;
 }
 
-}  // namespace fyt::serial_driver
+}  // namespace imca::serial_driver

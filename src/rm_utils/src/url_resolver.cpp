@@ -24,7 +24,7 @@
 #include "rcpputils/env.hpp"
 #include "rcpputils/filesystem_helper.hpp"
 
-namespace fyt::utils {
+namespace imca::utils {
 std::filesystem::path URLResolver::getResolvedPath(const std::string &url) {
   const std::string resolved_url = resolveUrl(url);
   UrlType url_type = parseUrl(url);
@@ -141,4 +141,4 @@ std::string URLResolver::getPackageFileName(const std::string &url) {
   }
 }
 
-}  // namespace fyt::utils
+}  // namespace imca::utils

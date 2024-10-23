@@ -31,7 +31,7 @@
 #include "rm_interfaces/msg/target.hpp"
 #include "rm_utils/math/trajectory_compensator.hpp"
 
-namespace fyt::auto_aim {
+namespace imca::auto_aim {
 // Solver class used to solve the gimbal command from tracked target
 class Solver {
 public:
@@ -98,5 +98,5 @@ private:
 
   std::weak_ptr<rclcpp::Node> node_;
 };
-}  // namespace fyt::auto_aim
+}  // namespace imca::auto_aim
 #endif  // ARMOR_SOLVER_SOLVER_HPP_

@@ -20,7 +20,7 @@
 #include <fstream>
 #include <mutex>
 
-namespace fyt::logger {
+namespace imca::logger {
 
 class Writer {
 public:
@@ -36,5 +36,5 @@ private:
   std::ofstream file_;
   std::mutex &r_mutex_;
 };
-}  // namespace fyt::logger
+}  // namespace imca::logger
 #endif  // RM_UTILS_LOGGER_WRITER_HPP_ 

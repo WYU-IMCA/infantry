@@ -15,7 +15,7 @@
 
 #include "rm_utils/math/trajectory_compensator.hpp"
 
-namespace fyt {
+namespace imca {
 bool TrajectoryCompensator::compensate(const Eigen::Vector3d &target_position,
                                        double &pitch) const noexcept {
   double target_height = target_position(2);
@@ -91,4 +91,4 @@ double ResistanceCompensator::getFlyingTime(const Eigen::Vector3d &target_positi
   double t = (exp(r * distance) - 1) / (r * velocity * cos(angle));
   return t;
 }
-}  // namespace fyt
+}  // namespace imca

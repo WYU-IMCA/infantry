@@ -20,7 +20,7 @@
 #include "rm_interfaces/msg/chassis_cmd.hpp"
 #include "rm_serial_driver/protocol.hpp"
 
-namespace fyt::serial_driver::protocol
+namespace imca::serial_driver::protocol
 {
   // 哨兵通信协议
   class ProtocolSentry : public Protocol
@@ -57,6 +57,6 @@ namespace fyt::serial_driver::protocol
     FixedPacket<32> packet_;
     rm_interfaces::msg::ChassisCmd chassis_cmd_;
   };
-} // namespace fyt::serial_driver::protocol
+} // namespace imca::serial_driver::protocol
 
 #endif // SERIAL_DRIVER_SENTRY_PROTOCOL_HPP_

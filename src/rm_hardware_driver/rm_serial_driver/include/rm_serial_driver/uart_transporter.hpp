@@ -24,7 +24,7 @@
 // project
 #include "rm_serial_driver/transporter_interface.hpp"
 
-namespace fyt::serial_driver {
+namespace imca::serial_driver {
 
 // 串口数据传输设备，符合通用传输接口。
 class UartTransporter : public TransporterInterface {
@@ -68,6 +68,6 @@ private:
   int parity_;
 };
 
-}  // namespace fyt::serial_driver
+}  // namespace imca::serial_driver
 
 #endif  // SERIAL_DRIVER_UART_TRANSPORTER_HPP_

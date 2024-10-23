@@ -43,7 +43,7 @@
 #include "rm_utils/heartbeat.hpp"
 #include "rm_utils/logger/log.hpp"
 
-namespace fyt::auto_aim {
+namespace imca::auto_aim {
 using tf2_filter = tf2_ros::MessageFilter<rm_interfaces::msg::Armors>;
 class ArmorSolverNode : public rclcpp::Node {
 public:
@@ -98,6 +98,6 @@ private:
   rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr marker_pub_;
 };
 
-}  // namespace fyt::auto_aim
+}  // namespace imca::auto_aim
 
 #endif  // ARMOR_SOLVER_SOLVER_NODE_HPP_

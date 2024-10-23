@@ -26,7 +26,7 @@
 TEST(ArmorSolverNodeTest, NodeStartupTest)
 {
   rclcpp::NodeOptions options;
-  auto node = std::make_shared<fyt::auto_aim::ArmorSolverNode>(options);
+  auto node = std::make_shared<imca::auto_aim::ArmorSolverNode>(options);
   node.reset();
 }
 

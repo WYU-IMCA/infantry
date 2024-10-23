@@ -21,7 +21,7 @@
 #include <rclcpp/rclcpp.hpp>
 #include <std_msgs/msg/int64.hpp>
 
-namespace fyt {
+namespace imca {
 class HeartBeatPublisher {
 public:
   using SharedPtr = std::shared_ptr<HeartBeatPublisher>;
@@ -46,6 +46,6 @@ private:
   rclcpp::Publisher<std_msgs::msg::Int64>::SharedPtr publisher_;
   rclcpp::TimerBase::SharedPtr timer_;
 };
-}  // namespace fyt
+}  // namespace imca
 
 #endif  // RM_UTILS_HEARTBEAT_HPP_

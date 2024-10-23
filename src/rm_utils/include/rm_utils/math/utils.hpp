@@ -22,7 +22,7 @@
 #include <opencv2/core.hpp>
 #include <opencv2/core/eigen.hpp>
 
-namespace fyt {
+namespace imca {
 
 // util functions
 namespace utils {
@@ -93,5 +93,5 @@ inline Eigen::MatrixXd cvToEigen(const cv::Mat &cv_mat) noexcept {
 }
 
 }  // namespace utils
-}  // namespace fyt
+}  // namespace imca
 #endif

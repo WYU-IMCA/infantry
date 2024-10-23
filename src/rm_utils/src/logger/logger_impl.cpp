@@ -23,7 +23,7 @@
 #include "rm_utils/logger/impl/global_mutex.hpp"
 #include "rm_utils/logger/types.hpp"
 
-namespace fyt::logger {
+namespace imca::logger {
 
 namespace internal {
 
@@ -69,4 +69,4 @@ std::string Logger::getLocalTime() {
   return ss.str();
 }
 }  // namespace internal
-}  // namespace fyt::logger
+}  // namespace imca::logger

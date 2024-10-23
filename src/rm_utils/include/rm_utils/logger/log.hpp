@@ -1,5 +1,5 @@
-// Created by Chengfu Zou
-// Copyright (C) FYT Vision Group. All rights reserved.
+// Created by Chengfu ZoufytASSERT
+// Copyright (C) IMCA Vision Group. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,25 +19,25 @@
 #include <rm_utils/logger/logger_pool.hpp>
 #include <rm_utils/logger/types.hpp>
 
-#define FYT_REGISTER_LOGGER(name, path, level)                           \
+#define IMCA_REGISTER_LOGGER(name, path, level)                           \
   do {                                                                   \
-    fyt::logger::LoggerPool::registerLogger(                             \
-      name, path, fyt::logger::LogLevel::level, DATE_DIR | DATE_SUFFIX); \
+    imca::logger::LoggerPool::registerLogger(                             \
+      name, path, imca::logger::LogLevel::level, DATE_DIR | DATE_SUFFIX); \
   } while (0)
 
-#define FYT_LOG(name, level, ...)                                     \
+#define IMCA_LOG(name, level, ...)                                     \
   do {                                                                \
-    fyt::logger::LoggerPool::getLogger(name).log(level, __VA_ARGS__); \
+    imca::logger::LoggerPool::getLogger(name).log(level, __VA_ARGS__); \
   } while (0)
 
-#define FYT_DEBUG(name, ...) FYT_LOG(name, fyt::logger::LogLevel::DEBUG, __VA_ARGS__)
+#define IMCA_DEBUG(name, ...) IMCA_LOG(name, imca::logger::LogLevel::DEBUG, __VA_ARGS__)
 
-#define FYT_INFO(name, ...) FYT_LOG(name, fyt::logger::LogLevel::INFO, __VA_ARGS__)
+#define IMCA_INFO(name, ...) IMCA_LOG(name, imca::logger::LogLevel::INFO, __VA_ARGS__)
 
-#define FYT_WARN(name, ...) FYT_LOG(name, fyt::logger::LogLevel::WARN, __VA_ARGS__)
+#define IMCA_WARN(name, ...) IMCA_LOG(name, imca::logger::LogLevel::WARN, __VA_ARGS__)
 
-#define FYT_ERROR(name, ...) FYT_LOG(name, fyt::logger::LogLevel::ERROR, __VA_ARGS__)
+#define IMCA_ERROR(name, ...) IMCA_LOG(name, imca::logger::LogLevel::ERROR, __VA_ARGS__)
 
-#define FYT_FATAL(name, ...) FYT_LOG(name, fyt::logger::LogLevel::FATAL, __VA_ARGS__)
+#define IMCA_FATAL(name, ...) IMCA_LOG(name, imca::logger::LogLevel::FATAL, __VA_ARGS__)
 
 #endif  // RM_UTILS_LOGGER_LOGGER_HPP_

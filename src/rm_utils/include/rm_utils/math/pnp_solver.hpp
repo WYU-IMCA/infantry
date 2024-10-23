@@ -21,7 +21,7 @@
 #include <unordered_map>
 #include <vector>
 
-namespace fyt {
+namespace imca {
 class PnPSolver {
 public:
   PnPSolver(const std::array<double, 9> &camera_matrix,
@@ -84,5 +84,5 @@ private:
   std::vector<cv::Mat> rvecs_;
   std::vector<cv::Mat> tvecs_;
 };
-}  // namespace fyt
+}  // namespace imca
 #endif  // RM_UTILS_PNP_SOLVER_HPP_

@@ -449,7 +449,7 @@ void BuffTrackerNode::bladesCallback(const buff_interfaces::msg::BladeArray::Sha
     try {
       control_msg = solver_->solve(rune_msg, this->now(), tf2_buffer_);
     } catch (...) {
-      //FYT_ERROR("armor_solver", "Something went wrong in solver!");
+      //IMCA_ERROR("armor_solver", "Something went wrong in solver!");
       control_msg.yaw_diff = 0;
       control_msg.pitch_diff = 0;
       control_msg.distance = -1;
@@ -471,18 +471,18 @@ void BuffTrackerNode::setModeCallback(
 {
   response->success = true;
 
-  fyt::VisionMode mode = static_cast<fyt::VisionMode>(request->mode);
-  std::string mode_name = fyt::visionModeToString(mode);
+  imca::VisionMode mode = static_cast<imca::VisionMode>(request->mode);
+  std::string mode_name = imca::visionModeToString(mode);
   if (mode_name == "UNKNOWN") {
     return;
   }
   
   switch (mode) {
-    case fyt::VisionMode::SMALL_RUNE: {
+    case imca::VisionMode::SMALL_RUNE: {
       task_mode_="small_buff";
       break;
     }
-    case fyt::VisionMode::BIG_RUNE: {
+    case imca::VisionMode::BIG_RUNE: {
       task_mode_="large_buff";
       break;
     }

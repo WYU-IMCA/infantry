@@ -20,7 +20,7 @@
 #include <memory>
 #include <tuple>
 
-namespace fyt {
+namespace imca {
 
 class TrajectoryCompensator {
 public:
@@ -81,5 +81,5 @@ private:
   ~CompensatorFactory() = delete;
 };
 
-}  // namespace fyt
+}  // namespace imca
 #endif

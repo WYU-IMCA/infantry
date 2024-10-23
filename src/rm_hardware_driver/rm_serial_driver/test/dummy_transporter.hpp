@@ -23,7 +23,7 @@
 
 #include "rm_serial_driver/transporter_interface.hpp"
 
-using namespace fyt::serial_driver;
+using namespace imca::serial_driver;
 // FIFO传输设备，用于测试。
 class FifoTransporter : public TransporterInterface
 {
@@ -68,9 +68,9 @@ public:
   TransporterFactory()
   {
     int ret = pipe(fds1);
-    FYT_ASSERT(ret == 0);
+    IMCA_ASSERT(ret == 0);
     ret = pipe(fds2);
-    FYT_ASSERT(ret == 0);
+    IMCA_ASSERT(ret == 0);
 
     transporter1_ = std::make_shared<FifoTransporter>(fds1[0], fds2[1]);
     transporter2_ = std::make_shared<FifoTransporter>(fds2[0], fds1[1]);

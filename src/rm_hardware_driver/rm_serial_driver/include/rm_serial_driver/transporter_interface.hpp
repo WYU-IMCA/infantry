@@ -23,7 +23,7 @@
 #include <memory>
 #include <string>
 
-namespace fyt::serial_driver {
+namespace imca::serial_driver {
 
 // Transporter device interface to transport data between embedded systems
 // (stm32,c51) and PC
@@ -42,6 +42,6 @@ public:
   virtual std::string errorMessage() = 0;
 };
 
-}  // namespace fyt::serial_driver
+}  // namespace imca::serial_driver
 
 #endif  // SERIAL_DRIVER_TRANSPORTER_INTERFACE_HPP_

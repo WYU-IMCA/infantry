@@ -2,7 +2,7 @@
 //
 // Additional modifications and features by Chengfu Zou, Labor. Licensed under Apache License 2.0.
 //
-// Copyright (C) FYT Vision Group. All rights reserved.
+// Copyright (C) IMCA Vision Group. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@
 #include "armor_detector/types.hpp"
 #include "rm_utils/common.hpp"
 
-namespace fyt::auto_aim {
+namespace imca::auto_aim {
 Detector::Detector(const int &bin_thres,
                    const EnemyColor &color,
                    const LightParams &l,
@@ -327,4 +327,4 @@ void Detector::drawResults(cv::Mat &img) const noexcept {
   }
 }
 
-}  // namespace fyt::auto_aim
+}  // namespace imca::auto_aim

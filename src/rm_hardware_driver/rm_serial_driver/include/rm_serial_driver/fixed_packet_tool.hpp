@@ -14,7 +14,7 @@
 //
 // Additional modifications and features by Chengfu Zou, 2023.
 //
-// Copyright (C) FYT Vision Group. All rights reserved.
+// Copyright (C) IMCA Vision Group. All rights reserved.
 
 #ifndef SERIAL_DRIVER_FIXED_PACKET_TOOL_HPP_
 #define SERIAL_DRIVER_FIXED_PACKET_TOOL_HPP_
@@ -32,7 +32,7 @@
 #include "rm_serial_driver/transporter_interface.hpp"
 #include "rm_utils/logger/log.hpp"
 
-namespace fyt::serial_driver
+namespace imca::serial_driver
 {
 
   template <int capacity = 16>
@@ -48,7 +48,7 @@ namespace fyt::serial_driver
       {
         throw std::invalid_argument("transporter is nullptr");
       }
-      FYT_REGISTER_LOGGER("serial_driver", "~/fyt2024-log", INFO);
+      IMCA_REGISTER_LOGGER("serial_driver", "~/imca2024-log", INFO);
     }
 
     ~FixedPacketTool() { enbaleRealtimeSend(false); }
@@ -119,7 +119,7 @@ namespace fyt::serial_driver
     else
     {
       // reconnect
-      FYT_ERROR("serial_driver", "transporter_->write() failed");
+      IMCA_ERROR("serial_driver", "transporter_->write() failed");
       transporter_->close();
       transporter_->open();
       return false;
@@ -204,7 +204,7 @@ namespace fyt::serial_driver
       else
       {
         // 如果是断帧，拼接缓存，并遍历校验，获得合法数据
-       // FYT_INFO("serial_driver", "checkPacket() failed, check if it is a broken frame");
+       // IMCA_INFO("serial_driver", "checkPacket() failed, check if it is a broken frame");
         if (recv_buf_len_ + recv_len > capacity * 2)
         {
           recv_buf_len_ = 0;
@@ -229,7 +229,7 @@ namespace fyt::serial_driver
           }
         }
         // 表明断帧，或错误帧。
-        // FYT_WARN("serial_driver",
+        // IMCA_WARN("serial_driver",
         //          "checkPacket() failed with recv_len:{}, frame head:{}, frame end:{}",
         //          recv_len,
         //          tmp_buffer_[0],
@@ -239,7 +239,7 @@ namespace fyt::serial_driver
     }
     else
     {
-     // FYT_ERROR("serial_driver", "transporter_->read() failed");
+     // IMCA_ERROR("serial_driver", "transporter_->read() failed");
       // reconnect
       transporter_->close();
       transporter_->open();
@@ -252,6 +252,6 @@ namespace fyt::serial_driver
   using FixedPacketTool32 = FixedPacketTool<32>;
   using FixedPacketTool64 = FixedPacketTool<64>;
 
-} // namespace fyt::serial_driver
+} // namespace imca::serial_driver
 
 #endif // SERIAL_DRIVER_FIXED_PACKET_TOOL_HPP_

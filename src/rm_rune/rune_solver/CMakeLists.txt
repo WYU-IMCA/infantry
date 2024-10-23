@@ -38,7 +38,7 @@ target_link_libraries(${PROJECT_NAME}
 
 
 rclcpp_components_register_node(${PROJECT_NAME}
-  PLUGIN fyt::rune::RuneSolverNode
+  PLUGIN imca::rune::RuneSolverNode
   EXECUTABLE ${PROJECT_NAME}_node
 )
 

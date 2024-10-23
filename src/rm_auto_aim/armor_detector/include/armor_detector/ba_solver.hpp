@@ -40,7 +40,7 @@
 #include "armor_detector/graph_optimizer.hpp"
 #include "armor_detector/types.hpp"
 
-namespace fyt::auto_aim {
+namespace imca::auto_aim {
 
 // BA algorithm based Optimizer for the armor pose estimation (Particularly for
 // the Yaw angle)
@@ -59,5 +59,5 @@ private:
   g2o::OptimizationAlgorithmLevenberg *lm_algorithm_;
 };
 
-}  // namespace fyt::auto_aim
+}  // namespace imca::auto_aim
 #endif // ARMOR_DETECTOR_BAS_SOLVER_HPP_

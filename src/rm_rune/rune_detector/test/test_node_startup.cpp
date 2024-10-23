@@ -14,7 +14,7 @@
 TEST(RuneDetectorNodeTest, NodeStartupTest)
 {
   rclcpp::NodeOptions options;
-  auto node = std::make_shared<fyt::rune::RuneDetectorNode>(options);
+  auto node = std::make_shared<imca::rune::RuneDetectorNode>(options);
   node.reset();
 }
 

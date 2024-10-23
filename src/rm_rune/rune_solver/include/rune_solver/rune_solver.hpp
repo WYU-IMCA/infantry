@@ -45,7 +45,7 @@
 #include "rune_solver/curve_fitter.hpp"
 #include "rune_solver/types.hpp"
 
-namespace fyt::rune {
+namespace imca::rune {
 
 // Usage: 
 //   1. init(msg), if tracker_state == LOST
@@ -130,5 +130,5 @@ private:
   std::shared_ptr<tf2_ros::Buffer> tf2_buffer_;
 };
 
-}  // namespace fyt::rune
+}  // namespace imca::rune
 #endif // RUNE_SOLVER_SOLVER_HPP_

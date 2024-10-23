@@ -23,7 +23,7 @@
 #include "armor_detector/types.hpp"
 #include "rm_utils/math/utils.hpp"
 
-namespace fyt::auto_aim {
+namespace imca::auto_aim {
 
 void VertexYaw::oplusImpl(const double *update) {
   _estimate += Eigen::Vector<double, 1>(update[0]);
@@ -61,4 +61,4 @@ void EdgeProjection::computeError() {
   _error = landmarks_predicted - _measurement;
 }
 
-}  // namespace fyt::auto_aim
+}  // namespace imca::auto_aim

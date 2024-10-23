@@ -31,7 +31,7 @@
 #include "rm_utils/logger/impl/writer.hpp"
 #include "rm_utils/logger/types.hpp"
 
-namespace fyt::logger {
+namespace imca::logger {
 
 namespace internal {
 class Logger {
@@ -101,5 +101,5 @@ private:
 };
 }  // namespace internal
 
-}  // namespace fyt::logger
+}  // namespace imca::logger
 #endif  // RM_UTILS_LOGGER_LOGGER_IMPL_HPP_ 

@@ -1,5 +1,5 @@
 // Created by Chengfu Zou on 2023.7.2
-// Copyright (C) FYT Vision Group. All rights reserved.
+// Copyright (C) IMCA Vision Group. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,13 +32,13 @@
 #include "rm_utils/heartbeat.hpp"
 #include "rm_utils/logger/log.hpp"
 
-namespace fyt::camera_driver {
+namespace imca::camera_driver {
 class VideoPlayerNode : public rclcpp::Node {
 public:
   explicit VideoPlayerNode(const rclcpp::NodeOptions &options)
   : Node("camera_driver", options), frame_cnt_(0) {
-    FYT_REGISTER_LOGGER("camera_driver", "~/fyt2024-log", INFO);
-    FYT_INFO("camera_driver", "Starting VideoPlayerNode!");
+    IMCA_REGISTER_LOGGER("camera_driver", "~/imca2024-log", INFO);
+    IMCA_INFO("camera_driver", "Starting VideoPlayerNode!");
     // Get parameters
     video_path = this->declare_parameter("path", "/home/dfg/backup/RM2025_VISION/TODO/src/resource/armor.mp4");
     std::string camera_info_url =
@@ -55,13 +55,13 @@ public:
     std::filesystem::path video_file(video_path);
 
     if (!std::filesystem::exists(video_file)) {
-      FYT_ERROR("camera_driver", "Video file {} does not exist!", video_file.string());
+      IMCA_ERROR("camera_driver", "Video file {} does not exist!", video_file.string());
       rclcpp::shutdown();
       return;
     }
     cap_.open(video_path);
     if (!cap_.isOpened()) {
-      FYT_ERROR("camera_driver", "Video file open failed!");
+      IMCA_ERROR("camera_driver", "Video file open failed!");
       rclcpp::shutdown();
       return;
     }
@@ -89,7 +89,7 @@ public:
       camera_info.width = image_msg_->width;
       camera_info.height = image_msg_->height;
       camera_info_manager_->setCameraInfo(camera_info);
-      FYT_WARN("camera_driver", "Invalid camera info URL: {}", camera_info_url);
+      IMCA_WARN("camera_driver", "Invalid camera info URL: {}", camera_info_url);
     }
     camera_info_.header.frame_id = frame_id;
     camera_info_.header.stamp = this->now();
@@ -102,7 +102,7 @@ public:
     timer_ = this->create_wall_timer(std::chrono::milliseconds(1), [this]() {
       cap_ >> frame_;
       if (frame_.empty()) {
-        FYT_INFO("camera_driver", "Video file ends!");
+        IMCA_INFO("camera_driver", "Video file ends!");
         if (!is_loop_) {
           rclcpp::shutdown();
           return;
@@ -115,7 +115,7 @@ public:
       memcpy(image_msg_->data.data(), frame_.data, image_msg_->step * image_msg_->height);
       frame_cnt_++;
       if (frame_cnt_ < start_frame_) {
-        FYT_INFO("camera_driver", "Skipping frame {}", frame_cnt_);
+        IMCA_INFO("camera_driver", "Skipping frame {}", frame_cnt_);
         return;
       }
       image_msg_->header.stamp = camera_info_.header.stamp = this->now();
@@ -141,7 +141,7 @@ private:
   int start_frame_;
   int frame_cnt_;
 };
-}  // namespace fyt::camera_driver
+}  // namespace imca::camera_driver
 
 #include "rclcpp_components/register_node_macro.hpp"
-RCLCPP_COMPONENTS_REGISTER_NODE(fyt::camera_driver::VideoPlayerNode)
+RCLCPP_COMPONENTS_REGISTER_NODE(imca::camera_driver::VideoPlayerNode)

@@ -19,7 +19,7 @@
 
 #include "rm_utils/math/extended_kalman_filter.hpp"
 
-namespace fyt {
+namespace imca {
 ExtendedKalmanFilter::ExtendedKalmanFilter(const VecVecFunc &f,
                                            const VecVecFunc &h,
                                            const VecMatFunc &j_f,
@@ -64,4 +64,4 @@ Eigen::MatrixXd ExtendedKalmanFilter::update(const Eigen::VectorXd &z) noexcept 
   return x_post;
 }
 
-}  // namespace fyt
+}  // namespace imca

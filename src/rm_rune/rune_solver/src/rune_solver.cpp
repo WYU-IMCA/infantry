@@ -1,5 +1,5 @@
 // Maintained by Chengfu Zou, Labor
-// Copyright (C) FYT Vision Group. All rights reserved.
+// Copyright (C) IMCA Vision Group. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@
 #include "rm_utils/math/utils.hpp"
 #include "rune_solver/types.hpp"
 
-namespace fyt::rune {
+namespace imca::rune {
 RuneSolver::RuneSolver(const RuneSolverParams &rsp, std::shared_ptr<tf2_ros::Buffer> buffer)
 : rune_solver_params(rsp), tf2_buffer_(buffer) {
   // Init
@@ -52,7 +52,7 @@ double RuneSolver::init(const rm_interfaces::msg::RuneTarget::SharedPtr received
     return 0;
   }
 
-  FYT_INFO("rune_solver", "Init!");
+  IMCA_INFO("rune_solver", "Init!");
 
   // Init EKF
   try {
@@ -61,14 +61,14 @@ double RuneSolver::init(const rm_interfaces::msg::RuneTarget::SharedPtr received
     // Filter out outliers
     Eigen::Vector3d t = T_odom_2_rune.block(0, 3, 3, 1);//xyz
     if (t.norm() < MIN_RUNE_DISTANCE || t.norm() > MAX_RUNE_DISTANCE) {
-      FYT_ERROR("rune_solver", "Rune position is out of range");
+      IMCA_ERROR("rune_solver", "Rune position is out of range");
       return 0;
     }
 
     ekf_state_ = getStateFromTransform(T_odom_2_rune);
     ekf.setState(ekf_state_);
   } catch (...) {
-    FYT_ERROR("rune_solver", "Init failed");
+    IMCA_ERROR("rune_solver", "Init failed");
     return 0;
   }
 
@@ -104,7 +104,7 @@ double RuneSolver::update(const rm_interfaces::msg::RuneTarget::SharedPtr receiv
       // Filter out outliers
       Eigen::Vector3d t = T_odom_2_rune.block(0, 3, 3, 1);
       if (t.norm() < MIN_RUNE_DISTANCE || t.norm() > MAX_RUNE_DISTANCE) {
-        FYT_ERROR("rune_solver", "Rune position is out of range");
+        IMCA_ERROR("rune_solver", "Rune position is out of range");
         return 0;
       }
 
@@ -112,7 +112,7 @@ double RuneSolver::update(const rm_interfaces::msg::RuneTarget::SharedPtr receiv
       ekf.predict();
       ekf_state_ = ekf.update(measurement);
     } catch (...) {
-      FYT_ERROR("rune_solver", "EKF update failed");
+      IMCA_ERROR("rune_solver", "EKF update failed");
       return 0;
     }
 
@@ -225,11 +225,11 @@ Eigen::Matrix4d RuneSolver::solvePose(const rm_interfaces::msg::RuneTarget &pred
       pose.block(0, 0, 3, 3) = rot_odom;
 
     } catch (tf2::TransformException &ex) {
-      FYT_ERROR("rune_solver", "rune to odom error: {}", ex.what());
+      IMCA_ERROR("rune_solver", "rune to odom error: {}", ex.what());
       throw ex;
     }
   } else {
-    FYT_ERROR("rune_solver", "PnP failed");
+    IMCA_ERROR("rune_solver", "PnP failed");
     throw std::runtime_error("PnP failed");
   }
   return pose;
@@ -248,7 +248,7 @@ rm_interfaces::msg::GimbalCmd RuneSolver::solveGimbalCmd(const Eigen::Vector3d &
     tf2::Matrix3x3(tf_q).getRPY(roll, current_pitch, current_yaw);
     current_pitch = -current_pitch;
   } catch (tf2::TransformException &ex) {
-    FYT_ERROR("rune_solver", "{}", ex.what());
+    IMCA_ERROR("rune_solver", "{}", ex.what());
     throw ex;
   }
 
@@ -284,7 +284,7 @@ rm_interfaces::msg::GimbalCmd RuneSolver::solveGimbalCmd(const Eigen::Vector3d &
   if (std::abs(gimbal_cmd.yaw_diff) < shooting_range_yaw &&
       std::abs(gimbal_cmd.pitch_diff) < shooting_range_pitch) {
     gimbal_cmd.fire_advice = true;
-    FYT_DEBUG("rune_solver", "You Can Fire!");
+    IMCA_DEBUG("rune_solver", "You Can Fire!");
   } else {
     gimbal_cmd.fire_advice = false;
   }
@@ -373,4 +373,4 @@ cv::Point2f RuneSolver::getCenterPoint(
          ARMOR_KEYPOINTS_NUM;
 }
 
-}  // namespace fyt::rune
+}  // namespace imca::rune

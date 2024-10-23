@@ -18,7 +18,7 @@
 
 #include "rm_serial_driver/protocol.hpp"
 
-namespace fyt::serial_driver::protocol
+namespace imca::serial_driver::protocol
 {
   // 步兵通信协议
   class ProtocolInfantry : public Protocol
@@ -47,6 +47,6 @@ namespace fyt::serial_driver::protocol
     FixedPacketTool<16>::SharedPtr packet_tool_;
     float last_yaw_,last_pitch_;
   };
-} // namespace fyt::serial_driver::protocol
+} // namespace imca::serial_driver::protocol
 
 #endif // SERIAL_DRIVER_INFANTRY_PROTOCOL_HPP_

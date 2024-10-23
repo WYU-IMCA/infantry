@@ -47,7 +47,7 @@
 #include "rune_solver/rune_solver.hpp"
 #include "rm_utils/common.hpp"
 
-namespace fyt::rune {
+namespace imca::rune {
 class RuneSolverNode : public rclcpp::Node {
 public:
   RuneSolverNode(const rclcpp::NodeOptions &options);
@@ -104,5 +104,5 @@ private:
   rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr marker_pub_;
   
 };
-}  // namespace fyt::rune
+}  // namespace imca::rune
 #endif

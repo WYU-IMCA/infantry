@@ -21,7 +21,7 @@
 // project
 #include "rm_utils/logger/log.hpp"
 
-namespace fyt::camera_driver {
+namespace imca::camera_driver {
 Recorder::Recorder(const std::filesystem::path &file, int fps, cv::Size size)
 : path(file), size_(size), fps_(fps) {}
 
@@ -72,4 +72,4 @@ void Recorder::recorderThread() {
   }
 }
 
-}  // namespace fyt::camera_driver
+}  // namespace imca::camera_driver

@@ -23,7 +23,7 @@
 #include <cstring>
 #include <memory>
 
-namespace fyt::serial_driver {
+namespace imca::serial_driver {
 
 // 定长数据包封装
 // [head_byte(0xff),...(data_bytes)...,check_byte,tail_byte(0x0d)]
@@ -80,6 +80,6 @@ using FixedPacket16 = FixedPacket<16>;
 using FixedPacket32 = FixedPacket<32>;
 using FixedPacket64 = FixedPacket<64>;
 
-}  // namespace fyt::serial_driver
+}  // namespace imca::serial_driver
 
 #endif  // SERIAL_DRIVER_FIXED_PACKET_HPP_

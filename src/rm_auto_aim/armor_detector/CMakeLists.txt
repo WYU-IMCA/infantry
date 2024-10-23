@@ -56,7 +56,7 @@ tbb
 
 
 rclcpp_components_register_node(${PROJECT_NAME}
-  PLUGIN fyt::auto_aim::ArmorDetectorNode
+  PLUGIN imca::auto_aim::ArmorDetectorNode
   EXECUTABLE armor_detector_node
 )
 

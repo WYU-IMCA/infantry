@@ -7,7 +7,7 @@ BuffSolver::BuffSolver(std::weak_ptr<rclcpp::Node> n) : node_(n)
   prediction_delay_ = node->declare_parameter("solver.prediction_delay", 0.0);
 
   std::string compenstator_type = node->declare_parameter("solver.compensator_type", "ideal");
-  trajectory_compensator_ = fyt::CompensatorFactory::createCompensator(compenstator_type);
+  trajectory_compensator_ = imca::CompensatorFactory::createCompensator(compenstator_type);
   trajectory_compensator_->iteration_times = node->declare_parameter("solver.iteration_times", 20);
   trajectory_compensator_->velocity = node->declare_parameter("solver.bullet_speed", 20.0);
   trajectory_compensator_->gravity = node->declare_parameter("solver.gravity", 9.8);

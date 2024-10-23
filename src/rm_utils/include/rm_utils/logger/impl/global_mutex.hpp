@@ -19,7 +19,7 @@
 #include <mutex>
 #include <unordered_map>
 
-namespace fyt::logger {
+namespace imca::logger {
 
 static std::mutex g_mutex_;
 
@@ -40,5 +40,5 @@ private:
   GlobalMutex() = default;
   ~GlobalMutex() = default;
 };
-}  // namespace fyt::logger
+}  // namespace imca::logger
 #endif

@@ -17,7 +17,7 @@
 
 #include <numeric>
 
-namespace fyt::auto_aim {
+namespace imca::auto_aim {
 
 void LightCornerCorrector::correctCorners(Armor &armor, const cv::Mat &gray_img) {
   // If the width of the light is too small, the correction is not performed
@@ -153,4 +153,4 @@ cv::Point2f LightCornerCorrector::findCorner(const cv::Mat &gray_img,
   return result;
 }
 
-}  // namespace fyt::auto_aim
+}  // namespace imca::auto_aim

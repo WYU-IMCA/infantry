@@ -41,7 +41,7 @@ public:
   }
 
 private:
-  std::unique_ptr<fyt::TrajectoryCompensator> trajectory_compensator_;
+  std::unique_ptr<imca::TrajectoryCompensator> trajectory_compensator_;
   void calcYawAndPitch(
     const Eigen::Vector3d & p, const std::array<double, 3> rpy, double & yaw,
     double & pitch) const noexcept;

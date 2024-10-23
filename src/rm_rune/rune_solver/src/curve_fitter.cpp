@@ -1,6 +1,6 @@
 // Created by Labor 2024.1.28
 // Maintained by Chengfu Zou
-// Copyright (C) FYT Vision Group. All rights reserved.
+// Copyright (C) IMCA Vision Group. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@
 #include "rm_utils/logger/log.hpp"
 #include "rune_solver/types.hpp"
 
-namespace fyt::rune {
+namespace imca::rune {
 
 // Fit two curves simultaneously and choose the one with lower cost
 // This function will change the type_ automatically
@@ -122,7 +122,7 @@ void CurveFitter::fitDoubleCurve() {
     type_ = MotionType::BIG;
   }
   auto t2 = std::chrono::high_resolution_clock::now();
-  FYT_DEBUG("rune_solver",
+  IMCA_DEBUG("rune_solver",
             "Fitting time: {} ms",
             std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count());
 }
@@ -185,7 +185,7 @@ void CurveFitter::fitCurve() {
   ceres::Solver::Summary summary;
   ceres::Solve(options, &problem, &summary);
   auto t2 = std::chrono::high_resolution_clock::now();
-  FYT_DEBUG("rune_solver",
+  IMCA_DEBUG("rune_solver",
             "Fitting time: {} ms",
             std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count());
 
@@ -320,7 +320,7 @@ void CurveFitter::update(double time, double angle) {
     startFitting();
   } else {
     // If fitting is in progess or has been completed, do not start a new fitting
-    FYT_WARN("rune_solver", "Fitting is in progress, do not start a new fitting");
+    IMCA_WARN("rune_solver", "Fitting is in progress, do not start a new fitting");
   }
 }
 
@@ -331,4 +331,4 @@ bool CurveFitter::statusVerified() {
   }
   return true;
 }
-}  //namespace fyt::rune
+}  //namespace imca::rune

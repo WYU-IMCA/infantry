@@ -2,7 +2,7 @@
 //
 // Additional modifications and features by Chengfu Zou, Labor. Licensed under Apache License 2.0.
 //
-// Copyright (C) FYT Vision Group. All rights reserved.
+// Copyright (C) IMCA Vision Group. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -53,13 +53,13 @@
 #include "rm_utils/math/utils.hpp"
 #include "rm_utils/url_resolver.hpp"
 
-namespace fyt::auto_aim
+namespace imca::auto_aim
 {
   ArmorDetectorNode::ArmorDetectorNode(const rclcpp::NodeOptions &options)
       : Node("armor_detector", options)
   {
-    FYT_REGISTER_LOGGER("armor_detector", "~/fyt2024-log", INFO);
-    FYT_INFO("armor_detector", "Starting ArmorDetectorNode!");
+    IMCA_REGISTER_LOGGER("armor_detector", "~/imca2024-log", INFO);
+    IMCA_INFO("armor_detector", "Starting ArmorDetectorNode!");
     // Detector
     detector_ = initDetector();
 
@@ -179,7 +179,7 @@ namespace fyt::auto_aim
     }
     catch (...)
     {
-      // FYT_ERROR("armor_detector", "Something Wrong when lookUpTransform");
+      // IMCA_ERROR("armor_detector", "Something Wrong when lookUpTransform");
       return;
     }
 
@@ -283,12 +283,12 @@ namespace fyt::auto_aim
           marker_array_.markers.emplace_back(text_marker_);
 
           // std::string path =
-          //   fmt::format("/home/zcf/fyt2024-log/images/{}/{}.jpg", armor_msg.number, now().seconds());
+          //   fmt::format("/home/zcf/imca2024-log/images/{}/{}.jpg", armor_msg.number, now().seconds());
           // cv::imwrite(path, armor.number_img);
         }
         else
         {
-          FYT_WARN("armor_detector", "PnP Failed!");
+          IMCA_WARN("armor_detector", "PnP Failed!");
         }
       }
       // Publishing detected armors
@@ -341,7 +341,7 @@ namespace fyt::auto_aim
         utils::URLResolver::getResolvedPath("package://armor_detector/model/lenet.onnx");
     fs::path label_path =
         utils::URLResolver::getResolvedPath("package://armor_detector/model/label.txt");
-    FYT_ASSERT_MSG(fs::exists(model_path) && fs::exists(label_path),
+    IMCA_ASSERT_MSG(fs::exists(model_path) && fs::exists(label_path),
                    model_path.string() + " Not Found!");
 
     double threshold = this->declare_parameter("classifier_threshold", 0.7);
@@ -452,7 +452,7 @@ namespace fyt::auto_aim
 
     if (best_idx != 0)
     {
-      FYT_DEBUG("armor_detector", "PnP Solution Changed!");
+      IMCA_DEBUG("armor_detector", "PnP Solution Changed!");
       rvec = rvecs[best_idx];
       // Take average
       tvec = std::accumulate(tvecs.begin(), tvecs.end(), cv::Mat::zeros(3, 1, CV_64F)) / tvecs.size();
@@ -602,7 +602,7 @@ namespace fyt::auto_aim
     response->message = mode_name;
     if (mode_name == "UNKNOWN")
     {
-      FYT_ERROR("armor_detector", "Invalid mode: {}", request->mode);
+      IMCA_ERROR("armor_detector", "Invalid mode: {}", request->mode);
       return;
     }
 
@@ -657,14 +657,14 @@ namespace fyt::auto_aim
     }
     }
 
-    FYT_WARN("armor_detector", "Set mode to {}", mode_name);
+    IMCA_WARN("armor_detector", "Set mode to {}", mode_name);
   }
 
-} // namespace fyt::auto_aim
+} // namespace imca::auto_aim
 
 #include "rclcpp_components/register_node_macro.hpp"
 
 // Register the component with class_loader.
 // This acts as a sort of entry point, allowing the component to be discoverable
 // when its library is being loaded into a running process.
-RCLCPP_COMPONENTS_REGISTER_NODE(fyt::auto_aim::ArmorDetectorNode)
+RCLCPP_COMPONENTS_REGISTER_NODE(imca::auto_aim::ArmorDetectorNode)

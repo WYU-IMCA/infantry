@@ -28,8 +28,8 @@
 #include "rm_utils/common.hpp"
 #include "rm_utils/url_resolver.hpp"
 
-using namespace fyt;
-using namespace fyt::auto_aim;
+using namespace imca;
+using namespace imca::auto_aim;
 TEST(ArmorDetectorNodeTest, NodeStartupTest) {
   // Init detector
   int binary_thres = 160;

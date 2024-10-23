@@ -17,7 +17,7 @@
 
 #include <opencv2/calib3d.hpp>
 
-namespace fyt {
+namespace imca {
 PnPSolver::PnPSolver(const std::array<double, 9> &camera_matrix,
                      const std::vector<double> &distortion_coefficients,
                      cv::SolvePnPMethod method)
@@ -61,4 +61,4 @@ Eigen::VectorXd PnPSolver::getPose(const cv::Mat &rvec, const cv::Mat &tvec) noe
   return pose;
 }
 
-}  // namespace fyt
+}  // namespace imca

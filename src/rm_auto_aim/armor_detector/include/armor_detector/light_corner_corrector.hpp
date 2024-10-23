@@ -21,7 +21,7 @@
 // project
 #include "armor_detector/types.hpp"
 
-namespace fyt::auto_aim {
+namespace imca::auto_aim {
 
 struct SymmetryAxis {
   cv::Point2f centroid;
@@ -50,5 +50,5 @@ private:
                          std::string order);
 };
 
-}  // namespace fyt::auto_aim
+}  // namespace imca::auto_aim
 #endif  // ARMOR_DETECTOR_LIGHT_CORNER_CORRECTOR_HPP_

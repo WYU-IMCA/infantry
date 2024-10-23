@@ -24,7 +24,7 @@
 // project
 #include "rune_solver/types.hpp"
 
-namespace fyt::rune {
+namespace imca::rune {
 
 class CurveFitter {
 public:
@@ -115,5 +115,5 @@ private:
     const double mov_;
   };
 };
-}  //namespace fyt::rune
+}  //namespace imca::rune
 #endif  // RUNE_SOLVER_CURVE_FITTER_HPP_

@@ -27,7 +27,7 @@
 // OpenCV
 #include <opencv2/videoio.hpp>
 
-namespace fyt::camera_driver {
+namespace imca::camera_driver {
 class Recorder {
 public:
   using Frame = std::vector<unsigned char>;
@@ -54,5 +54,5 @@ private:
   std::condition_variable cv_;
   std::thread recorder_thread_;
 };
-}  // namespace fyt::camera_driver
+}  // namespace imca::camera_driver
 #endif  // RM_CAMERA_DRIVER_RECORDER_HPP_

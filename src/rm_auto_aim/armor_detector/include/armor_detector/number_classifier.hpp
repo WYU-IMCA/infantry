@@ -30,7 +30,7 @@
 // project
 #include "armor_detector/types.hpp"
 
-namespace fyt::auto_aim {
+namespace imca::auto_aim {
 // Class used to classify the number of the armor, based on the MLP model
 class NumberClassifier {
 public:
@@ -56,5 +56,5 @@ private:
   std::vector<std::string> class_names_;
   std::vector<std::string> ignore_classes_;
 };
-}  // namespace fyt::auto_aim
+}  // namespace imca::auto_aim
 #endif  // ARMOR_DETECTOR_NUMBER_CLASSIFIER_HPP_

@@ -18,7 +18,7 @@
 
 #include <fmt/format.h>
 
-namespace fyt::logger {
+namespace imca::logger {
 class LoggerNotFoundError : public std::exception {
 public:
   explicit LoggerNotFoundError(std::string_view name) {
@@ -39,5 +39,5 @@ private:
   std::string_view msg;
 };
 
-}  // namespace fyt::logger
+}  // namespace imca::logger
 #endif // RM_UTILS_LOGGER_EXCEPTION_HPP_

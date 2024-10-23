@@ -51,7 +51,7 @@
 #include "rm_utils/math/pnp_solver.hpp"
 #include "std_msgs/msg/string.hpp"
 
-namespace fyt::auto_aim {
+namespace imca::auto_aim {
 
 // Armor Detector Node
 // Subscribe to the image topic, run the armor detection alogorithm and publish the detected armors
@@ -142,6 +142,6 @@ private:
   bool record_is_open_;
 };
 
-}  // namespace fyt::auto_aim
+}  // namespace imca::auto_aim
 
 #endif  // ARMOR_DETECTOR_DETECTOR_NODE_HPP_

@@ -27,7 +27,7 @@
 #include "rm_utils/common.hpp"
 #include "rune_detector/types.hpp"
 
-namespace fyt::rune {
+namespace imca::rune {
 
 static constexpr int INPUT_W = 480;    // Width of input
 static constexpr int INPUT_H = 480;    // Height of input
@@ -442,4 +442,4 @@ std::tuple<cv::Point2f, cv::Mat> RuneDetector::detectRTag(const cv::Mat &img,
   }
 }
 
-}  // namespace fyt::rune
+}  // namespace imca::rune

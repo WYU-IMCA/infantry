@@ -1,6 +1,6 @@
 // Created by Chengfu Zou
 // Maintained by Chengfu Zou, Labor
-// Copyright (C) FYT Vision Group. All rights reserved.
+// Copyright (C) IMCA Vision Group. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@
 #include "rm_utils/logger/log.hpp"
 #include "rm_utils/math/utils.hpp"
 
-namespace fyt::auto_aim {
+namespace imca::auto_aim {
 Solver::Solver(std::weak_ptr<rclcpp::Node> n) : node_(n) {
   auto node = node_.lock();
 
@@ -63,7 +63,7 @@ rm_interfaces::msg::GimbalCmd Solver::solve(const rm_interfaces::msg::Target &ta
     min_switching_v_yaw_ = node->get_parameter("solver.min_switching_v_yaw").as_double();
     node.reset();
   } catch (const std::runtime_error &e) {
-    FYT_ERROR("armor_solver", "{}", e.what());
+    IMCA_ERROR("armor_solver", "{}", e.what());
   }
 
   // Get current roll, yaw and pitch of gimbal
@@ -78,7 +78,7 @@ rm_interfaces::msg::GimbalCmd Solver::solve(const rm_interfaces::msg::Target &ta
     tf2::Matrix3x3(tf_q).getRPY(rpy[0], rpy[1], rpy[2]);
     rpy[1] = -rpy[1];
   } catch (tf2::TransformException &ex) {
-    FYT_ERROR("armor_solver", "{}", ex.what());
+    IMCA_ERROR("armor_solver", "{}", ex.what());
     throw ex;
   }
 
@@ -168,7 +168,7 @@ rm_interfaces::msg::GimbalCmd Solver::solve(const rm_interfaces::msg::Target &ta
   gimbal_cmd.pitch_diff = (pitch - rpy[1]) * 180 / M_PI;
 
   if (gimbal_cmd.fire_advice) {
-    FYT_DEBUG("armor_solver", "You Need Fire!");
+    IMCA_DEBUG("armor_solver", "You Need Fire!");
   }
   return gimbal_cmd;
 }
@@ -272,4 +272,4 @@ void Solver::calcYawAndPitch(const Eigen::Vector3d &p,
     pitch = temp_pitch;
   }
 }
-}  // namespace fyt::auto_aim
+}  // namespace imca::auto_aim

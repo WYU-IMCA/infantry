@@ -1,5 +1,5 @@
 // Maintained by Chengfu Zou, Labor
-// Copyright (C) FYT Vision Group. All rights reserved.
+// Copyright (C) IMCA Vision Group. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,10 +28,10 @@
 #include "rm_utils/logger/log.hpp"
 #include "rm_utils/math/pnp_solver.hpp"
 
-namespace fyt::rune {
+namespace imca::rune {
 RuneSolverNode::RuneSolverNode(const rclcpp::NodeOptions &options) : Node("rune_solver", options) {
-  FYT_REGISTER_LOGGER("rune_solver", "~/fyt2024-log", INFO);
-  FYT_INFO("rune_solver", "Starting RuneSolverNode!");
+  IMCA_REGISTER_LOGGER("rune_solver", "~/imca2024-log", INFO);
+  IMCA_INFO("rune_solver", "Starting RuneSolverNode!");
 
   predict_offset_ = declare_parameter("predict_time", 0.1);
 
@@ -222,7 +222,7 @@ void RuneSolverNode::timerCallback() {
     try {
       control_msg = rune_solver_->solveGimbalCmd(pred_pos);
     } catch (...) {
-      FYT_ERROR("rune_solver", "solveGimbalCmd error");
+      IMCA_ERROR("rune_solver", "solveGimbalCmd error");
       control_msg.yaw_diff = 0;
       control_msg.pitch_diff = 0;
       control_msg.distance = -1;
@@ -370,7 +370,7 @@ void RuneSolverNode::setModeCallback(
   VisionMode mode = static_cast<VisionMode>(request->mode);
   std::string mode_name = visionModeToString(mode);
   if (mode_name == "UNKNOWN") {
-    FYT_ERROR("rune_solver", "Invalid mode: {}", request->mode);
+    IMCA_ERROR("rune_solver", "Invalid mode: {}", request->mode);
     return;
   }
 
@@ -386,14 +386,14 @@ void RuneSolverNode::setModeCallback(
     }
   }
 
-  FYT_WARN("rune_solver", "Set Rune Mode: {}", visionModeToString(mode));
+  IMCA_WARN("rune_solver", "Set Rune Mode: {}", visionModeToString(mode));
 }
 
-}  // namespace fyt::rune
+}  // namespace imca::rune
 
 #include "rclcpp_components/register_node_macro.hpp"
 
 // Register the component with class_loader.
 // This acts as a sort of entry point, allowing the component to be discoverable when its library
 // is being loaded into a running process.
-RCLCPP_COMPONENTS_REGISTER_NODE(fyt::rune::RuneSolverNode)
+RCLCPP_COMPONENTS_REGISTER_NODE(imca::rune::RuneSolverNode)
