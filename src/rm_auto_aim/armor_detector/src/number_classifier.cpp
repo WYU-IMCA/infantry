@@ -54,6 +54,12 @@ NumberClassifier::NumberClassifier(const std::string &model_path,
   }
 }
 
+/**
+ * @brief  提取数字roi图像
+ * @param  src 输入图像
+ * @param  armor 要提取roi图像的装甲板
+ * @return 装甲板中间数字的roi图像
+ */
 cv::Mat NumberClassifier::extractNumber(const cv::Mat &src, const Armor &armor) const noexcept {
   // Light length in image
   static const int light_length = 12;
@@ -92,6 +98,11 @@ cv::Mat NumberClassifier::extractNumber(const cv::Mat &src, const Armor &armor) 
   return number_image;
 }
 
+/**
+ * @brief  对装甲板的数字图像进行分类识别，并存到装甲板类型的属性中
+ * @param  src 原图
+ * @param  armor 要处理的装甲板
+ */
 void NumberClassifier::classify(const cv::Mat &src, Armor &armor) noexcept {
   // Normalize
   cv::Mat input = armor.number_img / 255.0;
@@ -119,6 +130,10 @@ void NumberClassifier::classify(const cv::Mat &src, Armor &armor) noexcept {
   armor.classfication_result = fmt::format("{}: {:.1f}%", armor.number, armor.confidence * 100.0);
 }
 
+/**
+ * @brief  根据装甲板的数字识别置信度、不需要识别的数字类型以及不合理的装甲板大小和数字类型剔除掉不合理的装甲板
+ * @param  armors  所有装甲板的集合
+ */
 void NumberClassifier::eraseIgnoreClasses(std::vector<Armor> &armors) noexcept {
   armors.erase(
     std::remove_if(armors.begin(),

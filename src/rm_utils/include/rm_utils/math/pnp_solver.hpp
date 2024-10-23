@@ -32,7 +32,14 @@ public:
   void setObjectPoints(const std::string &coord_frame_name,
                        const std::vector<cv::Point3f> &object_points) noexcept;
 
-  // Get 3d position of the object coord system using PnP algorithm
+  /**
+   * @brief  通过PNP解算获取物体的三维坐标
+   * @param  image_points 物体的二维图像坐标
+   * @param  rvec  PNP解算得到的旋转矩阵
+   * @param  tvec  PNP解算得到的平移矩阵
+   * @param  coord_frame_name 要进行PNP解算的物体类型
+   * @return  True成功  False失败
+   */
   template <class InputArray>
   bool solvePnP(const InputArray &image_points,
                 cv::Mat &rvec,

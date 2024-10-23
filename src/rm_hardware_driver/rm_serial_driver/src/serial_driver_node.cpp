@@ -47,6 +47,9 @@ namespace fyt::serial_driver
     FYT_INFO("serial_driver", "Initializing SerialDriverNode!");
   }
 
+  /**
+   * @brief  指定接收频率的串口接收回调函数
+   */
   void serial_driver::SerialDriverNode::listenTimerCallback()
   {
     if (protocol_ == nullptr)
@@ -173,6 +176,9 @@ namespace fyt::serial_driver
     }
   }
 
+  /**
+   * @brief  串口接收的回调函数
+   */
   void SerialDriverNode::listenLoop()
   {
     if (protocol_ == nullptr)
@@ -240,6 +246,9 @@ namespace fyt::serial_driver
     }
   }
 
+  /**
+   * @brief  用于转换模式时给其他节点发送信息的
+   */
   void SerialDriverNode::setMode(SetModeClient &client, const uint8_t mode)
   {
     using namespace std::chrono_literals;
