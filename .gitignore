@@ -1,0 +1,6 @@
+resource/
+build/
+log/
+install/
+*.mp4
+

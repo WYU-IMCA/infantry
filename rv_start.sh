@@ -1,8 +1,9 @@
 #!/bin/bash
 
-launch_path=/home/imca/imca_vision
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+launch_path=$script_dir
 exec_path="rm_bringup"
-launch_file="bringup_merge.launch.py"
+launch_file="bringup.launch.py"
 cd $launch_path 
 FOX_DEBUG=0
 
