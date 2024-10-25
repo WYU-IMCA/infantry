@@ -21,7 +21,7 @@
 #include <unordered_map>
 #include <vector>
 
-namespace imca {
+namespace fyt {
 class PnPSolver {
 public:
   PnPSolver(const std::array<double, 9> &camera_matrix,
@@ -32,14 +32,7 @@ public:
   void setObjectPoints(const std::string &coord_frame_name,
                        const std::vector<cv::Point3f> &object_points) noexcept;
 
-  /**
-   * @brief  通过PNP解算获取物体的三维坐标
-   * @param  image_points 物体的二维图像坐标
-   * @param  rvec  PNP解算得到的旋转矩阵
-   * @param  tvec  PNP解算得到的平移矩阵
-   * @param  coord_frame_name 要进行PNP解算的物体类型
-   * @return  True成功  False失败
-   */
+  // Get 3d position of the object coord system using PnP algorithm
   template <class InputArray>
   bool solvePnP(const InputArray &image_points,
                 cv::Mat &rvec,
@@ -84,5 +77,5 @@ private:
   std::vector<cv::Mat> rvecs_;
   std::vector<cv::Mat> tvecs_;
 };
-}  // namespace imca
+}  // namespace fyt
 #endif  // RM_UTILS_PNP_SOLVER_HPP_

@@ -23,7 +23,7 @@
 #include <Eigen/Dense>
 #include <functional>
 
-namespace imca {
+namespace fyt {
 
 class ExtendedKalmanFilter {
 public:
@@ -88,6 +88,6 @@ private:
   Eigen::VectorXd x_post;
 };
 
-}  // namespace imca
+}  // namespace fyt
 
 #endif  // RM_UTILS_KALMAN_FILTER_HPP_

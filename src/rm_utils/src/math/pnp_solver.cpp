@@ -17,7 +17,7 @@
 
 #include <opencv2/calib3d.hpp>
 
-namespace imca {
+namespace fyt {
 PnPSolver::PnPSolver(const std::array<double, 9> &camera_matrix,
                      const std::vector<double> &distortion_coefficients,
                      cv::SolvePnPMethod method)
@@ -26,21 +26,11 @@ PnPSolver::PnPSolver(const std::array<double, 9> &camera_matrix,
     cv::Mat(1, 5, CV_64F, const_cast<double *>(distortion_coefficients.data())).clone())
 , method_(method) {}
 
-/**
- * @brief  为该pnp解算器设置世界坐标系下的关键点
- * @param  coord_frame_name 是用于解算什么类型的物体  此处有 大小装甲板两种
- * @param  object_points 为不同类型的物体中，在世界坐标系的几个关键点坐标
- */
 void PnPSolver::setObjectPoints(const std::string &coord_frame_name,
                                 const std::vector<cv::Point3f> &object_points) noexcept {
   object_points_map_[coord_frame_name] = object_points;
 }
 
-/**
- * @brief  计算输入二维点到图像中心的距离
- * @param  image_point 图像中的二维点坐标
- * @return 到图像中心的距离
- */
 float PnPSolver::calculateDistanceToCenter(const cv::Point2f &image_point) const noexcept {
   float cx = camera_matrix_.at<double>(0, 2);
   float cy = camera_matrix_.at<double>(1, 2);
@@ -61,4 +51,4 @@ Eigen::VectorXd PnPSolver::getPose(const cv::Mat &rvec, const cv::Mat &tvec) noe
   return pose;
 }
 
-}  // namespace imca
+}  // namespace fyt

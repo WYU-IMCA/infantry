@@ -34,7 +34,7 @@
 // project
 #include "rune_detector/types.hpp"
 
-namespace imca::rune {
+namespace fyt::rune {
 struct GridAndStride {
   int grid0;
   int grid1;
@@ -90,5 +90,5 @@ private:
 
   std::mutex mtx_;
 };
-}  // namespace imca::rune
+}  // namespace fyt::rune
 #endif  // RUNE_DETECTOR_RUNE_DETECTOR_HPP_

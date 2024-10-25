@@ -32,7 +32,7 @@
 #include "rm_serial_driver/fixed_packet_tool.hpp"
 #include "rm_serial_driver/uart_transporter.hpp"
 
-namespace imca::serial_driver
+namespace fyt::serial_driver
 {
   namespace protocol
   {
@@ -71,5 +71,5 @@ namespace imca::serial_driver
     };
 
   } // namespace protocol
-} // namespace imca::serial_driver
+} // namespace fyt::serial_driver
 #endif // SERIAL_DRIVER_PROTOCOLS_HPP_

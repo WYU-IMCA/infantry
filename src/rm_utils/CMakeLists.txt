@@ -25,13 +25,13 @@ find_package(fmt REQUIRED)
 # include
 include_directories(include)
 
-add_library(imcalogger SHARED
+add_library(fytlogger SHARED
   src/logger/logger_impl.cpp
   src/logger/writer.cpp
   src/logger/logger_pool.cpp
 )
-target_link_libraries(imcalogger fmt::fmt)
-ament_target_dependencies(imcalogger fmt)
+target_link_libraries(fytlogger fmt::fmt)
+ament_target_dependencies(fytlogger fmt)
 
 # create rm_utils lib
 add_library(${PROJECT_NAME} SHARED
@@ -67,8 +67,8 @@ install(TARGETS ${PROJECT_NAME}
   RUNTIME DESTINATION bin
   INCLUDES DESTINATION include
 )
-install(TARGETS imcalogger
-  EXPORT imcalogger
+install(TARGETS fytlogger
+  EXPORT fytlogger
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib
   RUNTIME DESTINATION bin
@@ -77,7 +77,7 @@ install(TARGETS imcalogger
 
 # export lib lib
 ament_export_targets(${PROJECT_NAME} HAS_LIBRARY_TARGET)
-ament_export_targets(imcalogger HAS_LIBRARY_TARGET)
+ament_export_targets(fytlogger HAS_LIBRARY_TARGET)
 ament_export_dependencies(${dependencies} fmt)
 
 # test

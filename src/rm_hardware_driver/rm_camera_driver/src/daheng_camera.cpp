@@ -1,5 +1,5 @@
 // Created by Chengfu Zou on 2023.7.1
-// Copyright (C) IMCA Vision Group. All rights reserved.
+// Copyright (C) FYT Vision Group. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -41,11 +41,11 @@ extern "C" void GX_STDC CallbackWrapper(GX_FRAME_CALLBACK_PARAM *arg) {
   }
 }
 
-namespace imca::camera_driver {
+namespace fyt::camera_driver {
 DahengCameraNode::DahengCameraNode(const rclcpp::NodeOptions &options)
 : Node("camera_driver", options) {
-  IMCA_REGISTER_LOGGER("camera_driver", "~/imca2024-log", INFO);
-  IMCA_INFO("camera_driver", "Starting DahengCameraNode!");
+  FYT_REGISTER_LOGGER("camera_driver", "~/fyt2024-log", INFO);
+  FYT_INFO("camera_driver", "Starting DahengCameraNode!");
 
   camera_name_ = this->declare_parameter("camera_name", "daheng");
   camera_info_url_ =
@@ -81,7 +81,7 @@ DahengCameraNode::DahengCameraNode(const rclcpp::NodeOptions &options)
   } else if (pixel_format_ == "bgra8") {
     gx_pixel_format_ = GX_PIXEL_FORMAT_BGRA8;
   } else {
-    IMCA_ERROR("camera_driver", "Unsupported pixel format: {}", pixel_format_);
+    FYT_ERROR("camera_driver", "Unsupported pixel format: {}", pixel_format_);
   }
 
   camera_info_manager_ =
@@ -96,7 +96,7 @@ DahengCameraNode::DahengCameraNode(const rclcpp::NodeOptions &options)
     camera_info.width = image_msg_.width;
     camera_info.height = image_msg_.height;
     camera_info_manager_->setCameraInfo(camera_info);
-    IMCA_WARN("camera_driver", "Invalid camera info URL: {}", camera_info_url_);
+    FYT_WARN("camera_driver", "Invalid camera info URL: {}", camera_info_url_);
   }
   camera_info_.header.frame_id = frame_id_;
   camera_info_.header.stamp = this->now();
@@ -121,25 +121,25 @@ DahengCameraNode::DahengCameraNode(const rclcpp::NodeOptions &options)
   if (enable_recorder) {
     std::string home = std::getenv("HOME");
     std::filesystem::path video_path =
-      home + "/imca2024-log/video/" + std::to_string(std::time(nullptr)) + ".avi";
+      home + "/fyt2024-log/video/" + std::to_string(std::time(nullptr)) + ".avi";
     recorder_ = std::make_unique<Recorder>(
       video_path, frame_rate_, cv::Size(resolution_width_, resolution_height_));
     recorder_->start();
-    IMCA_INFO(
+    FYT_INFO(
       "camera_driver", "Recorder started! Video file: {}", video_path.string());
   }
 
-  IMCA_INFO("camera_driver", "DahengCameraNode has been initialized!");
+  FYT_INFO("camera_driver", "DahengCameraNode has been initialized!");
 }
 
 DahengCameraNode::~DahengCameraNode() {
   close();
   if (recorder_ != nullptr) {
     recorder_->stop();
-    IMCA_INFO(
+    FYT_INFO(
       "camera_driver", "Recorder stopped! Video file {} has been saved", recorder_->path.string());
   }
-  IMCA_INFO("camera_driver", "DahengCameraNode has been destroyed!");
+  FYT_INFO("camera_driver", "DahengCameraNode has been destroyed!");
 }
 
 void DahengCameraNode::timerCallback() {
@@ -147,7 +147,7 @@ void DahengCameraNode::timerCallback() {
   while (!is_open_ && rclcpp::ok()) {
     bool is_open_success = open();
     if (!is_open_success) {
-      IMCA_ERROR("camera_driver", "open() failed");
+      FYT_ERROR("camera_driver", "open() failed");
       close();
       return;
     }
@@ -155,13 +155,13 @@ void DahengCameraNode::timerCallback() {
   // Watch Dog
   double dt = (this->now() - rclcpp::Time(camera_info_.header.stamp)).seconds();
   if (dt > 5.0) {
-    IMCA_WARN("camera_driver", "Camera is not alive! lost frame for {:.2f} seconds", dt);
+    FYT_WARN("camera_driver", "Camera is not alive! lost frame for {:.2f} seconds", dt);
     close();
   }
 }
 
 void DahengCameraNode::close() {
-  IMCA_INFO("camera_driver", "Closing Daheng Galaxy Camera Device!");
+  FYT_INFO("camera_driver", "Closing Daheng Galaxy Camera Device!");
   if (is_open_ && dev_handle_ != nullptr) {
     //发送停采命令
     GXStreamOff(dev_handle_);
@@ -173,9 +173,9 @@ void DahengCameraNode::close() {
 }
 
 bool DahengCameraNode::open() {
-  IMCA_INFO("camera_driver", "Opening Daheng Galaxy Camera Device!");
+  FYT_INFO("camera_driver", "Opening Daheng Galaxy Camera Device!");
   if (is_open_) {
-    IMCA_WARN("camera_driver", "Daheng Galaxy Camera Device is already opened!");
+    FYT_WARN("camera_driver", "Daheng Galaxy Camera Device is already opened!");
     close();
   }
   gx_status_ = GX_STATUS_SUCCESS;
@@ -187,21 +187,21 @@ bool DahengCameraNode::open() {
   // 尝试初始化库
   gx_status_ = GXInitLib();
   if (gx_status_ != GX_STATUS_SUCCESS) {
-    IMCA_ERROR("camera_driver", "Can't init lib");
+    FYT_ERROR("camera_driver", "Can't init lib");
     return false;
   }
 
   // 枚举设备列表
   gx_status_ = GXUpdateDeviceList(&device_num, 1000);
   if ((gx_status_ != GX_STATUS_SUCCESS) || (device_num <= 0)) {
-    IMCA_WARN("camera_driver", "Can't find camera");
+    FYT_WARN("camera_driver", "Can't find camera");
     return false;
   }
-  IMCA_INFO("camera_driver", "Found {} devices", device_num);
+  FYT_INFO("camera_driver", "Found {} devices", device_num);
   //打开设备
   gx_status_ = GXOpenDevice(&openParam, &dev_handle_);
   if (gx_status_ != GX_STATUS_SUCCESS) {
-    IMCA_ERROR("camera_driver", "Can't open device");
+    FYT_ERROR("camera_driver", "Can't open device");
     return false;
   }
   is_open_ = true;
@@ -251,17 +251,17 @@ bool DahengCameraNode::open() {
   g_callback = std::bind(&DahengCameraNode::onFrameCallbackFun, this, std::placeholders::_1);
   gx_status_ = GXRegisterCaptureCallback(dev_handle_, nullptr, CallbackWrapper);
   if (gx_status_ != GX_STATUS_SUCCESS) {
-    IMCA_ERROR("camera_driver", "Register capture callback function failed!");
+    FYT_ERROR("camera_driver", "Register capture callback function failed!");
     return false;
   }
 
   //发送开采命令
   gx_status_ = GXStreamOn(dev_handle_);
   if (gx_status_ != GX_STATUS_SUCCESS) {
-    IMCA_ERROR("camera_driver", "Send start capture command failed!");
+    FYT_ERROR("camera_driver", "Send start capture command failed!");
     return false;
   }
-  IMCA_INFO("camera_driver", "Daheng Galaxy Camera Device Open Success!");
+  FYT_INFO("camera_driver", "Daheng Galaxy Camera Device Open Success!");
   return true;
 }
 
@@ -291,17 +291,17 @@ rcl_interfaces::msg::SetParametersResult DahengCameraNode::onSetParameters(
     if (param.get_name() == "exposure_time") {
       exposure_time_ = param.as_int();
       GXSetFloat(dev_handle_, GX_FLOAT_EXPOSURE_TIME, static_cast<double>(exposure_time_));
-      IMCA_INFO("camera_driver", "Set exposure_time: {}", exposure_time_);
+      FYT_INFO("camera_driver", "Set exposure_time: {}", exposure_time_);
     } else if (param.get_name() == "gain") {
       gain_ = param.as_double();
       GXSetFloat(dev_handle_, GX_FLOAT_GAIN, gain_);
-      IMCA_INFO("camera_driver", "Set gain: {}", gain_);
+      FYT_INFO("camera_driver", "Set gain: {}", gain_);
     }
   }
   return result;
 }
 
-}  // namespace imca::camera_driver
+}  // namespace fyt::camera_driver
 
 #include "rclcpp_components/register_node_macro.hpp"
-RCLCPP_COMPONENTS_REGISTER_NODE(imca::camera_driver::DahengCameraNode)
+RCLCPP_COMPONENTS_REGISTER_NODE(fyt::camera_driver::DahengCameraNode)

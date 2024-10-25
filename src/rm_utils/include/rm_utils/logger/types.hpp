@@ -27,7 +27,7 @@
 #include <fmt/color.h>
 #include <fmt/core.h>
 
-namespace imca::logger {
+namespace fyt::logger {
 
 enum class LogLevel : std::uint8_t { DEBUG, INFO, WARN, ERROR, FATAL };
 
@@ -51,6 +51,6 @@ using LogOptions = unsigned char;
 #define DATE_SUFFIX 0b00000010
 #define OVER_WRITE 0b00000100
 
-}  // namespace imca::logger
+}  // namespace fyt::logger
 #endif  // RM_UTILS_LOGGER_TYPES_HPP_
  

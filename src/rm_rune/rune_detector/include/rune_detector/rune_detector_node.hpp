@@ -39,7 +39,7 @@
 #include "rm_utils/heartbeat.hpp"
 #include "rune_detector/rune_detector.hpp"
 
-namespace imca::rune {
+namespace fyt::rune {
 class RuneDetectorNode : public rclcpp::Node {
 public:
   RuneDetectorNode(const rclcpp::NodeOptions &options);
@@ -93,5 +93,5 @@ private:
   bool debug_;
   image_transport::Publisher result_img_pub_;
 };
-}  // namespace imca::rune
+}  // namespace fyt::rune
 #endif  // RUNE_DETECTOR_RUNE_DETECTOR_NODE_HPP_

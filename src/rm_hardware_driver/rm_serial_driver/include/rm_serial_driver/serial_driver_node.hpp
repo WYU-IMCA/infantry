@@ -37,7 +37,7 @@
 #include "rm_serial_driver/transporter_interface.hpp"
 #include "std_msgs/msg/string.hpp"
 
-namespace imca::serial_driver
+namespace fyt::serial_driver
 {
 
   // Node wrapper for SerialDriver
@@ -110,6 +110,6 @@ namespace imca::serial_driver
     // bool record_is_open_;
   };
 
-} // namespace imca::serial_driver
+} // namespace fyt::serial_driver
 
 #endif // SERIAL_DRIVER_SERIAL_DRIVER_NODE_HPP_

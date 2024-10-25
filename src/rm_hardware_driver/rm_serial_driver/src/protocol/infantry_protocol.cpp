@@ -15,7 +15,7 @@
 
 #include "rm_serial_driver/protocol/infantry_protocol.hpp"
 
-namespace imca::serial_driver::protocol
+namespace fyt::serial_driver::protocol
 {
   ProtocolInfantry::ProtocolInfantry(std::string_view port_name, bool enable_data_print, bool enable_send_data_print)
   {
@@ -120,4 +120,4 @@ namespace imca::serial_driver::protocol
     return {client1};
   }
 
-} // namespace imca::serial_driver::protocol
+} // namespace fyt::serial_driver::protocol

@@ -17,7 +17,7 @@
 
 #include "rm_utils/logger/exception.hpp"
 
-namespace imca::logger {
+namespace fyt::logger {
 internal::Logger &LoggerPool::getLogger(const std::string &name) {
   if (auto iter = loggers_.find(name); iter != loggers_.end()) {
     return *iter->second;
@@ -38,4 +38,4 @@ void LoggerPool::registerLogger(const std::string &name,
 
 std::mutex LoggerPool::l_mutex_;
 std::unordered_map<std::string, std::shared_ptr<internal::Logger>> LoggerPool::loggers_;
-}  // namespace imca::logger
+}  // namespace fyt::logger

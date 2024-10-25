@@ -20,7 +20,7 @@
 // project
 #include "rm_utils/common.hpp"
 
-namespace imca::rune {
+namespace fyt::rune {
 
 enum class RuneType { INACTIVATED = 0, ACTIVATED };
 
@@ -85,5 +85,5 @@ struct RuneObject {
   cv::Rect box;
 };
 
-}  // namespace imca::rune
+}  // namespace fyt::rune
 #endif  // RUNE_DETECTOR_TYPES_HPP_

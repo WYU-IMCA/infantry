@@ -1,5 +1,5 @@
 // Created by Chengfu Zou on 2023.7.1
-// Copyright (C) IMCA Vision Group. All rights reserved.
+// Copyright (C) FYT Vision Group. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,12 +28,12 @@
 #include "rm_utils/logger/log.hpp"
 #include "rm_utils/math/utils.hpp"
 
-namespace imca::serial_driver
+namespace fyt::serial_driver
 {
   SerialDriverNode::SerialDriverNode(const rclcpp::NodeOptions &options)
       : Node("serial_driver", options)
   {
-    IMCA_REGISTER_LOGGER("serial_driver", "~/imca2024-log", INFO);
+    FYT_REGISTER_LOGGER("serial_driver", "~/fyt2024-log", INFO);
 
     bool use_timer = this->declare_parameter("use_timer", false);
 
@@ -44,12 +44,9 @@ namespace imca::serial_driver
       // Task thread
       listen_thread_ = std::make_unique<std::thread>(&SerialDriverNode::listenLoop, this);
 
-    IMCA_INFO("serial_driver", "Initializing SerialDriverNode!");
+    FYT_INFO("serial_driver", "Initializing SerialDriverNode!");
   }
 
-  /**
-   * @brief  指定接收频率的串口接收回调函数
-   */
   void serial_driver::SerialDriverNode::listenTimerCallback()
   {
     if (protocol_ == nullptr)
@@ -108,7 +105,7 @@ namespace imca::serial_driver
     {
       auto error_message = protocol_->getErrorMessage();
       error_message = error_message.empty() ? "unknown" : error_message;
-      // IMCA_WARN("serial_driver", "Failed to reveive packet! error message :{}", error_message);
+      // FYT_WARN("serial_driver", "Failed to reveive packet! error message :{}", error_message);
       std::this_thread::sleep_for(std::chrono::milliseconds(5));
     }
   }
@@ -125,18 +122,18 @@ namespace imca::serial_driver
     protocol_ = ProtocolFactory::createProtocol(protocol_type, port_name, enable_data_print, enable_send_data_print);
     if (protocol_ == nullptr)
     {
-      IMCA_FATAL("serial_driver", "Failed to create protocol with type: {}", protocol_type);
+      FYT_FATAL("serial_driver", "Failed to create protocol with type: {}", protocol_type);
       rclcpp::shutdown();
       return;
     }
-    IMCA_INFO(
+    FYT_INFO(
         "serial_driver", "Protocol has been created with type: {}, port: {}", protocol_type, port_name);
 
     // Subscriptions
     subscriptions_ = protocol_->getSubscriptions(this->shared_from_this());
     for (auto sub : subscriptions_)
     {
-      IMCA_INFO("serial_driver", "Subscribe to topic: {}", sub->get_topic_name());
+      FYT_INFO("serial_driver", "Subscribe to topic: {}", sub->get_topic_name());
     }
     // Publisher
     serial_receive_data_pub_ = this->create_publisher<rm_interfaces::msg::SerialReceiveData>(
@@ -151,24 +148,24 @@ namespace imca::serial_driver
     {
       std::string name = client->get_service_name();
       set_mode_clients_.emplace(name, client);
-      IMCA_INFO("serial_driver", "Create client for service: {}", name);
+      FYT_INFO("serial_driver", "Create client for service: {}", name);
     }
 
     for (auto client : protocol_->getParamClients(this->shared_from_this()))
     {
       set_params_clients_.emplace_back(client);
-      IMCA_INFO("serial_driver", "Create param client for node: {}", this->get_name());
+      FYT_INFO("serial_driver", "Create param client for node: {}", this->get_name());
     }
 
     // Heartbeat
     heartbeat_ = HeartBeatPublisher::create(this);
 
-    IMCA_INFO("serial_driver", "SerialDriverNode has been initialized!");
+    FYT_INFO("serial_driver", "SerialDriverNode has been initialized!");
   }
 
   SerialDriverNode::~SerialDriverNode()
   {
-    IMCA_INFO("serial_driver", "Destroy SerialDriverNode!");
+    FYT_INFO("serial_driver", "Destroy SerialDriverNode!");
     rclcpp::shutdown();
     if (listen_thread_ != nullptr)
     {
@@ -176,9 +173,6 @@ namespace imca::serial_driver
     }
   }
 
-  /**
-   * @brief  串口接收的回调函数
-   */
   void SerialDriverNode::listenLoop()
   {
     if (protocol_ == nullptr)
@@ -240,15 +234,12 @@ namespace imca::serial_driver
       {
         auto error_message = protocol_->getErrorMessage();
         error_message = error_message.empty() ? "unknown" : error_message;
-        // IMCA_WARN("serial_driver", "Failed to reveive packet! error message :{}", error_message);
+        // FYT_WARN("serial_driver", "Failed to reveive packet! error message :{}", error_message);
         std::this_thread::sleep_for(std::chrono::milliseconds(5));
       }
     }
   }
 
-  /**
-   * @brief  用于转换模式时给其他节点发送信息的
-   */
   void SerialDriverNode::setMode(SetModeClient &client, const uint8_t mode)
   {
     using namespace std::chrono_literals;
@@ -259,15 +250,15 @@ namespace imca::serial_driver
     {
       if (!rclcpp::ok())
       {
-        IMCA_ERROR(
+        FYT_ERROR(
             "serial_driver", "Interrupted while waiting for the service {}. Exiting.", service_name);
         return;
       }
-      IMCA_INFO("serial_driver", "Service {} not available, waiting again...", service_name);
+      FYT_INFO("serial_driver", "Service {} not available, waiting again...", service_name);
     }
     if (!client.ptr->service_is_ready())
     {
-      IMCA_WARN("serial_driver", "Service: {} is not available!", service_name);
+      FYT_WARN("serial_driver", "Service: {} is not available!", service_name);
       return;
     }
     // Send request
@@ -284,7 +275,7 @@ namespace imca::serial_driver
       } });
   }
 
-  void imca::serial_driver::SerialDriverNode::setParam(SetParamsClient &client, const rclcpp::Parameter &param)
+  void fyt::serial_driver::SerialDriverNode::setParam(SetParamsClient &client, const rclcpp::Parameter &param)
   {
     if (!client.ptr->service_is_ready())
     {
@@ -313,10 +304,10 @@ namespace imca::serial_driver
     }
   }
 
-} // namespace imca::serial_driver
+} // namespace fyt::serial_driver
 
 #include "rclcpp_components/register_node_macro.hpp"
 // Register the component with class_loader.
 // This acts as a sort of entry point, allowing the component to be discoverable when its library
 // is being loaded into a running process.
-RCLCPP_COMPONENTS_REGISTER_NODE(imca::serial_driver::SerialDriverNode)
+RCLCPP_COMPONENTS_REGISTER_NODE(fyt::serial_driver::SerialDriverNode)

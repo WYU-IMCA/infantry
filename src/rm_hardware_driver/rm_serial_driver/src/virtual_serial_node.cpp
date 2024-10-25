@@ -1,5 +1,5 @@
 // Created by Chengfu Zou
-// Copyright (C) IMCA Vision Group. All rights reserved.
+// Copyright (C) FYT Vision Group. All rights reserved.
 
 // std
 #include <chrono>
@@ -24,7 +24,7 @@
 #include "rm_utils/math/utils.hpp"
 #include "rm_utils/heartbeat.hpp"
 
-namespace imca::serial_driver {
+namespace fyt::serial_driver {
 class VirtualSerialNode : public rclcpp::Node {
   struct SetModeClient {
     SetModeClient(rclcpp::Client<rm_interfaces::srv::SetMode>::SharedPtr p) : ptr(p) {}
@@ -35,8 +35,8 @@ class VirtualSerialNode : public rclcpp::Node {
 
 public:
   explicit VirtualSerialNode(const rclcpp::NodeOptions &options) : Node("serial_driver", options) {
-    IMCA_REGISTER_LOGGER("serial_driver", "~/imca2024-log", INFO);
-    IMCA_INFO("serial_driver", "Starting VirtualSerialNode!");
+    FYT_REGISTER_LOGGER("serial_driver", "~/fyt2024-log", INFO);
+    FYT_INFO("serial_driver", "Starting VirtualSerialNode!");
 
     serial_receive_data_pub_ =
       this->create_publisher<rm_interfaces::msg::SerialReceiveData>("serial/receive", 10);
@@ -113,14 +113,14 @@ public:
     // Wait for service
     while (!client.ptr->wait_for_service(1s)) {
       if (!rclcpp::ok()) {
-        IMCA_ERROR(
+        FYT_ERROR(
           "serial_driver", "Interrupted while waiting for the service {}. Exiting.", service_name);
         return;
       }
-      IMCA_INFO("serial_driver", "service {} not available, waiting again...", service_name);
+      FYT_INFO("serial_driver", "service {} not available, waiting again...", service_name);
     }
     if (!client.ptr->service_is_ready()) {
-      IMCA_WARN("serial_driver", "Service: {} is not available!", service_name);
+      FYT_WARN("serial_driver", "Service: {} is not available!", service_name);
       return;
     }
     // Send request
@@ -148,11 +148,11 @@ private:
 
   std::unordered_map<std::string, SetModeClient> set_mode_clients_;
 };
-}  // namespace imca::serial_driver
+}  // namespace fyt::serial_driver
 
 #include "rclcpp_components/register_node_macro.hpp"
 
 // Register the component with class_loader.
 // This acts as a sort of entry point, allowing the component to be discoverable when its library
 // is being loaded into a running process.
-RCLCPP_COMPONENTS_REGISTER_NODE(imca::serial_driver::VirtualSerialNode)
+RCLCPP_COMPONENTS_REGISTER_NODE(fyt::serial_driver::VirtualSerialNode)

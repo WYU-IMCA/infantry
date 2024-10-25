@@ -20,7 +20,7 @@
 
 #include "rm_utils/logger/impl/global_mutex.hpp"
 
-namespace imca::logger {
+namespace fyt::logger {
 
 Writer::Writer(const std::string &filename) : r_mutex_(GlobalMutex::getFileMutex(filename)) {
   auto parent_path = std::filesystem::path(filename).parent_path();
@@ -47,4 +47,4 @@ Writer::~Writer() {
   file_.close();
 }
 
-}  // namespace imca::logger
+}  // namespace fyt::logger

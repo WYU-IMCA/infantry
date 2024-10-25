@@ -22,7 +22,7 @@
 #include <filesystem>
 #include <string>
 
-namespace imca::utils {
+namespace fyt::utils {
 class URLResolver {
 public:
   static std::filesystem::path getResolvedPath(const std::string &url);
@@ -42,6 +42,6 @@ private:
 
   static std::string getPackageFileName(const std::string &url);
 };
-}  // namespace imca::utils
+}  // namespace fyt::utils
 
 #endif // RM_UTILS_URL_RESOLVER_HPP_

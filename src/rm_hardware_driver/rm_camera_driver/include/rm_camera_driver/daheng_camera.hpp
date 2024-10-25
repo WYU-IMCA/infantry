@@ -33,7 +33,7 @@
 #include "rm_utils/logger/log.hpp"
 #include "rm_utils/heartbeat.hpp"
 
-namespace imca::camera_driver {
+namespace fyt::camera_driver {
 
 class DahengCameraNode : public rclcpp::Node {
 public:
@@ -92,5 +92,5 @@ private:
   int offset_y_;
 };
 
-}  // namespace imca::camera_driver
+}  // namespace fyt::camera_driver
 #endif  // endif RM_CAMERA_DRIVER_DAHENG_CAMERA_HPP_

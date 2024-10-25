@@ -1,6 +1,6 @@
 // Created by Labor 2024.1.28
 // Maintained by Chengfu Zou
-// Copyright (C) IMCA Vision Group. All rights reserved.
+// Copyright (C) FYT Vision Group. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,10 +25,12 @@
 #include "rm_utils/logger/log.hpp"
 #include "rune_solver/types.hpp"
 
-namespace imca::rune {
+namespace fyt::rune {
 
 // Fit two curves simultaneously and choose the one with lower cost
 // This function will change the type_ automatically
+
+/// @brief 拟合入口 用于automatically type 
 void CurveFitter::fitDoubleCurve() {
   if (is_static_) {
     // Treat the static target as a small rune
@@ -122,12 +124,14 @@ void CurveFitter::fitDoubleCurve() {
     type_ = MotionType::BIG;
   }
   auto t2 = std::chrono::high_resolution_clock::now();
-  IMCA_DEBUG("rune_solver",
+  FYT_DEBUG("rune_solver",
             "Fitting time: {} ms",
             std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count());
 }
 
 // Fit the curve with the determined type
+
+/// @brief 拟合入口 用于determined type
 void CurveFitter::fitCurve() {
   if (is_static_) {
     return;
@@ -185,7 +189,7 @@ void CurveFitter::fitCurve() {
   ceres::Solver::Summary summary;
   ceres::Solve(options, &problem, &summary);
   auto t2 = std::chrono::high_resolution_clock::now();
-  IMCA_DEBUG("rune_solver",
+  FYT_DEBUG("rune_solver",
             "Fitting time: {} ms",
             std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count());
 
@@ -193,6 +197,9 @@ void CurveFitter::fitCurve() {
   fitting_param_ = temp_param;
 }
 
+/// @brief 最小二乘预测
+/// @param current_time 相对于初始化时间的当前时间
+/// @return 预测角度
 double CurveFitter::predict(double current_time) {
   // If the target is static, return the last angle
   if (is_static_) {
@@ -216,6 +223,8 @@ double CurveFitter::predict(double current_time) {
   return pred_angle;
 }
 
+
+/// @brief 拟合器重置
 void CurveFitter::reset() {
   if (fitting_future_ != nullptr && fitting_future_->valid()) {
     fitting_future_->wait();
@@ -226,6 +235,8 @@ void CurveFitter::reset() {
   data_history_queue_.clear();
 }
 
+/// @brief 设置拟合类型
+/// @param t 拟合类型
 void CurveFitter::setType(const MotionType &t) {
   // Only available when the auto_type_determined_ is false
   if (type_ == t || auto_type_determined_) {
@@ -244,12 +255,16 @@ void CurveFitter::setType(const MotionType &t) {
   }
 }
 
+/// @brief 接口
+/// @return 拟合类型
 MotionType CurveFitter::getType() const { return type_; }
 
 void CurveFitter::setAutoTypeDetermined(bool auto_type_determined) {
   auto_type_determined_ = auto_type_determined;
 }
 
+/// @brief debug
+/// @return debug字段
 std::string CurveFitter::getDebugText() {
   std::string t = "Unknown";
 
@@ -275,6 +290,9 @@ std::string CurveFitter::getDebugText() {
   return t;
 }
 
+/// @brief 拟合数据更新
+/// @param time 相对于初始化时间的当前时间
+/// @param angle 观测角
 void CurveFitter::update(double time, double angle) {
   data_history_queue_.emplace_back(Data{.time = time, .angle = angle});
 
@@ -320,10 +338,12 @@ void CurveFitter::update(double time, double angle) {
     startFitting();
   } else {
     // If fitting is in progess or has been completed, do not start a new fitting
-    IMCA_WARN("rune_solver", "Fitting is in progress, do not start a new fitting");
+    FYT_WARN("rune_solver", "Fitting is in progress, do not start a new fitting");
   }
 }
 
+/// @brief 拟合器状态检测
+/// @return 拟合器状态
 bool CurveFitter::statusVerified() {
   if (type_ == MotionType::UNKNOWN || direction_ == Direction::UNKNOWN ||
       fitting_future_ == nullptr) {
@@ -331,4 +351,4 @@ bool CurveFitter::statusVerified() {
   }
   return true;
 }
-}  //namespace imca::rune
+}  //namespace fyt::rune

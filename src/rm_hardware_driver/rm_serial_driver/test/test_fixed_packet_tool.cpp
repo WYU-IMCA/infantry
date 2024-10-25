@@ -21,7 +21,7 @@
 #include "rm_serial_driver/fixed_packet.hpp"
 #include "rm_serial_driver/fixed_packet_tool.hpp"
 
-using namespace imca;
+using namespace fyt;
 TEST(FixedPacketTool, construct_with_nullptr) {
   EXPECT_THROW(serial_driver::FixedPacketTool<32>(nullptr), std::invalid_argument);
 }

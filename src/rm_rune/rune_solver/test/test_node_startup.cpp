@@ -26,7 +26,7 @@
 TEST(RuneSolverrNodeTest, NodeStartupTest)
 {
   rclcpp::NodeOptions options;
-  auto node = std::make_shared<imca::rune::RuneSolverNode>(options);
+  auto node = std::make_shared<fyt::rune::RuneSolverNode>(options);
   node.reset();
 }
 

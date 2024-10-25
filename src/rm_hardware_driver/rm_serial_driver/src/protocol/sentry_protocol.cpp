@@ -17,7 +17,7 @@
 // ros2
 #include <geometry_msgs/msg/twist.hpp>
 
-namespace imca::serial_driver::protocol
+namespace fyt::serial_driver::protocol
 {
   ProtocolSentry::ProtocolSentry(std::string_view port_name, bool enable_data_print,bool enable_send_data_print)
   {
@@ -141,4 +141,4 @@ namespace imca::serial_driver::protocol
 
     return {client1, client2};
   }
-} // namespace imca::serial_driver::protocol
+} // namespace fyt::serial_driver::protocol

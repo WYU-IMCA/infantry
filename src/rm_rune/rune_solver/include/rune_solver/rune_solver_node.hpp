@@ -47,14 +47,16 @@
 #include "rune_solver/rune_solver.hpp"
 #include "rm_utils/common.hpp"
 
-namespace imca::rune {
+namespace fyt::rune {
 class RuneSolverNode : public rclcpp::Node {
 public:
   RuneSolverNode(const rclcpp::NodeOptions &options);
 
 private:
+  
   void runeTargetCallback(const rm_interfaces::msg::RuneTarget::SharedPtr rune_target_msg);
 
+  
   void setModeCallback(const std::shared_ptr<rm_interfaces::srv::SetMode::Request> request,
                        std::shared_ptr<rm_interfaces::srv::SetMode::Response> response);
 
@@ -77,6 +79,7 @@ private:
   rclcpp::Publisher<geometry_msgs::msg::PointStamped>::SharedPtr target_pub_;
   rclcpp::Publisher<rm_interfaces::msg::GimbalCmd>::SharedPtr gimbal_pub_;
   rclcpp::TimerBase::SharedPtr pub_timer_;
+
   void timerCallback();
 
   // Enable/Disable Rune Solver
@@ -86,6 +89,7 @@ private:
   // Dynamic Parameter
   rcl_interfaces::msg::SetParametersResult onSetParameters(
     std::vector<rclcpp::Parameter> parameters);
+
   rclcpp::Node::OnSetParametersCallbackHandle::SharedPtr on_set_parameters_callback_handle_;
 
   // Camera info part
@@ -104,5 +108,5 @@ private:
   rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr marker_pub_;
   
 };
-}  // namespace imca::rune
+}  // namespace fyt::rune
 #endif

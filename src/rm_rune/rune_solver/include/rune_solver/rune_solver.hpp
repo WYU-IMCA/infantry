@@ -45,7 +45,7 @@
 #include "rune_solver/curve_fitter.hpp"
 #include "rune_solver/types.hpp"
 
-namespace imca::rune {
+namespace fyt::rune {
 
 // Usage: 
 //   1. init(msg), if tracker_state == LOST
@@ -69,6 +69,7 @@ public:
     TRACKING,
   } tracker_state;
 
+  
   RuneSolver(const RuneSolverParams &sr_params, std::shared_ptr<tf2_ros::Buffer> tf2_buffer);
 
   // Return: initial angle
@@ -77,7 +78,7 @@ public:
   // Return: normalized angle
   double update(const rm_interfaces::msg::RuneTarget::SharedPtr receive_target);
 
-  // Return: normalized predicted angle
+  
   double predictTarget(Eigen::Vector3d &predicted_position, double timestamp);
 
   // Return: transormation matrix from rune to odom
@@ -93,6 +94,8 @@ public:
   // Return: 3d position of target to be aimed at
   Eigen::Vector3d getTargetPosition(double angle_diff) const;
 
+  /// @brief 接口
+  /// @return 返回最后帧的一个角度
   double getCurAngle() const;
 
   // Solvers
@@ -103,6 +106,9 @@ public:
   RuneSolverParams rune_solver_params;
 
 private:
+  /// @brief 将原始数据转换成相对角度
+  /// @param received_target 原始数据
+  /// @return 
   double getNormalAngle(const rm_interfaces::msg::RuneTarget::SharedPtr received_target);
 
   double getObservedAngle(double normal_angle);
@@ -130,5 +136,5 @@ private:
   std::shared_ptr<tf2_ros::Buffer> tf2_buffer_;
 };
 
-}  // namespace imca::rune
+}  // namespace fyt::rune
 #endif // RUNE_SOLVER_SOLVER_HPP_

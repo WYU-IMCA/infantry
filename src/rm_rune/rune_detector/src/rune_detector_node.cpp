@@ -1,4 +1,4 @@
-// Copyright (C) IMCA Vision Group. All rights reserved.
+// Copyright (C) FYT Vision Group. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -33,13 +33,13 @@
 #include "rm_utils/url_resolver.hpp"
 #include "rune_detector/types.hpp"
 
-namespace imca::rune
+namespace fyt::rune
 {
   RuneDetectorNode::RuneDetectorNode(const rclcpp::NodeOptions &options)
       : Node("rune_detector", options), is_rune_(false)
   {
-    IMCA_REGISTER_LOGGER("rune_detector", "~/imca2024-log", INFO);
-    IMCA_INFO("rune_detector", "Starting RuneDetectorNode!");
+    FYT_REGISTER_LOGGER("rune_detector", "~/fyt2024-log", INFO);
+    FYT_INFO("rune_detector", "Starting RuneDetectorNode!");
 
     frame_id_ = declare_parameter("frame_id", "camera_optical_frame");
     detect_r_tag_ = declare_parameter("detect_r_tag", true);
@@ -53,7 +53,7 @@ namespace imca::rune
                                                                        rclcpp::SensorDataQoS());
 
     // Debug Publishers
-    this->debug_ = declare_parameter("debug", true);
+    this->debug_ = declare_parameter("debug", false);
     if (this->debug_)
     {
       createDebugPublishers();
@@ -76,8 +76,8 @@ namespace imca::rune
     std::string model_path =
         this->declare_parameter("detector.model", "package://rune_detector/model/yolox_rune_3.6m.onnx");
     std::string device_type = this->declare_parameter("detector.device_type", "CPU");
-    IMCA_ASSERT(!model_path.empty());
-    IMCA_INFO("rune_detector", "model : {}, device : {}", model_path, device_type);
+    FYT_ASSERT(!model_path.empty());
+    FYT_INFO("rune_detector", "model : {}, device : {}", model_path, device_type);
 
     rcl_interfaces::msg::ParameterDescriptor param_desc;
     param_desc.integer_range.resize(1);
@@ -92,7 +92,7 @@ namespace imca::rune
 
     namespace fs = std::filesystem;
     fs::path resolved_path = utils::URLResolver::getResolvedPath(model_path);
-    IMCA_ASSERT_MSG(fs::exists(resolved_path), resolved_path.string() + " Not Found");
+    FYT_ASSERT_MSG(fs::exists(resolved_path), resolved_path.string() + " Not Found");
 
     // Set dynamic parameter callback
     rcl_interfaces::msg::SetParametersResult onSetParameters(
@@ -226,7 +226,7 @@ namespace imca::rune
 
       if (result_it != objs.end())
       {
-        // IMCA_DEBUG("rune_detector", "Detected!");
+        // FYT_DEBUG("rune_detector", "Detected!");
         rune_msg.is_lost = false;
         rune_msg.pts[0].x = result_it->pts.r_center.x;
         rune_msg.pts[0].y = result_it->pts.r_center.y;
@@ -314,7 +314,7 @@ namespace imca::rune
     std::string mode_name = visionModeToString(mode);
     if (mode_name == "UNKNOWN")
     {
-      IMCA_ERROR("rune_detector", "Invalid mode: {}", request->mode);
+      FYT_ERROR("rune_detector", "Invalid mode: {}", request->mode);
       return;
     }
 
@@ -373,7 +373,7 @@ namespace imca::rune
     }
     }
 
-    IMCA_WARN("rune_detector", "Set Rune Mode: {}", visionModeToString(mode));
+    FYT_WARN("rune_detector", "Set Rune Mode: {}", visionModeToString(mode));
   }
 
   void RuneDetectorNode::createDebugPublishers()
@@ -383,10 +383,10 @@ namespace imca::rune
 
   void RuneDetectorNode::destroyDebugPublishers() { result_img_pub_.shutdown(); }
 
-} // namespace imca::rune
+} // namespace fyt::rune
 #include "rclcpp_components/register_node_macro.hpp"
 
 // Register the component with class_loader.
 // This acts as a sort of entry point, allowing the component to be discoverable when its library
 // is being loaded into a running process.
-RCLCPP_COMPONENTS_REGISTER_NODE(imca::rune::RuneDetectorNode)
+RCLCPP_COMPONENTS_REGISTER_NODE(fyt::rune::RuneDetectorNode)

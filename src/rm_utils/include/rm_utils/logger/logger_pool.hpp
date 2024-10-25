@@ -23,7 +23,7 @@
 
 #include "rm_utils/logger/impl/logger_impl.hpp"
 
-namespace imca::logger {
+namespace fyt::logger {
 class LoggerPool {
 public:
   static internal::Logger &getLogger(const std::string &name);
@@ -43,5 +43,5 @@ private:
   static std::mutex l_mutex_;
   static std::unordered_map<std::string, std::shared_ptr<internal::Logger>> loggers_;
 };
-}  // namespace imca::logger
+}  // namespace fyt::logger
 #endif // RM_UTILS?LOGGER_POOL_HPP_

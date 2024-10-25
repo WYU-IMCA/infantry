@@ -29,8 +29,8 @@
 #include "rune_detector/rune_detector.hpp"
 #include "rune_detector/types.hpp"
 
-using namespace imca;
-using namespace imca::rune;
+using namespace fyt;
+using namespace fyt::rune;
 TEST(RuneDetectorNodeTest, NodeStartupTest) {
   // Init Params
   std::string model_path = "package://rune_detector/model/yolox_rune_3.6m.onnx";

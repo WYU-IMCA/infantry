@@ -25,7 +25,7 @@
 
 #include <opencv2/opencv.hpp>
 
-namespace imca::rune {
+namespace fyt::rune {
 
 constexpr double DEG_72 = 0.4 * CV_PI;
 constexpr int ARMOR_KEYPOINTS_NUM = 4;
@@ -53,5 +53,5 @@ const std::vector<cv::Point3f> RUNE_OBJECT_POINTS = {cv::Point3f(0, 0, 0) / 1000
                                                      cv::Point3f(0, -858.5, -160) / 1000,
                                                      cv::Point3f(0, -541.5, -186) / 1000};
 
-}  // namespace imca::rune
+}  // namespace fyt::rune
 #endif  // RUNE_SOLVER_TYPES_HPP_
