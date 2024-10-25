@@ -40,7 +40,7 @@
 #include "armor_detector/number_classifier.hpp"
 #include "armor_detector/types.hpp"
 
-namespace imca::auto_aim {
+namespace fyt::auto_aim {
 NumberClassifier::NumberClassifier(const std::string &model_path,
                                    const std::string &label_path,
                                    const double thre,
@@ -161,4 +161,4 @@ void NumberClassifier::eraseIgnoreClasses(std::vector<Armor> &armors) noexcept {
     armors.end());
 }
 
-}  // namespace imca::auto_aim
+}  // namespace fyt::auto_aim
